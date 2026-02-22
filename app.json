@@ -1,0 +1,59 @@
+{
+  "id": "com.riyadh.athan",
+  "sdk": 3,
+  "name": {
+    "en": "Athan Times"
+  },
+  "version": "1.4.7",
+  "brandColor": "#064e3b",
+  "images": {
+    "large": "/assets/large.png",
+    "small": "/assets/small.png"
+  },
+  "compatibility": ">=5.0.0",
+  "author": {
+    "name": "Hatim"
+  },
+  "permissions": [
+    "homey:manager:api",
+    "homey:manager:geolocation"
+  ],
+  "flow": {
+    "triggers": [
+      {
+        "id": "prayer_started",
+        "title": {
+          "en": "A prayer starts"
+        },
+        "titleFormatted": {
+          "en": "Prayer starts: [[prayer]]"
+        },
+        "args": [
+          {
+            "name": "prayer",
+            "type": "dropdown",
+            "values": [
+              { "id": "Fajr", "label": { "en": "Fajr" } },
+              { "id": "Dhuhr", "label": { "en": "Dhuhr" } },
+              { "id": "Asr", "label": { "en": "Asr" } },
+              { "id": "Maghrib", "label": { "en": "Maghrib" } },
+              { "id": "Isha", "label": { "en": "Isha" } }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "suhoor_alarm",
+        "title": {
+          "en": "Suhoor Alarm (Ramadan Only)"
+        }
+      },
+      {
+        "id": "eid_morning",
+        "title": {
+          "en": "Eid Morning Alarm"
+        }
+      }
+    ]
+  }
+}

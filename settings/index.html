@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 20px; color: #333; }
+        .field { margin-bottom: 24px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
+        input { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
+        button { padding: 14px 20px; background-color: #064e3b; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; margin-top: 10px; }
+        button:hover { background-color: #04382a; }
+        .description { font-size: 12px; color: #666; margin-top: 4px; }
+        
+        .dashboard { background-color: #f3f4f6; border-left: 4px solid #064e3b; padding: 16px; border-radius: 6px; margin-bottom: 24px; }
+        .dashboard h3 { margin-top: 0; margin-bottom: 12px; font-size: 16px; color: #064e3b; }
+        .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 14px; }
+        .time-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #e5e7eb; }
+        .time-row:last-child { border-bottom: none; }
+        .time-label { font-weight: 600; color: #4b5563; }
+        .time-value { font-weight: bold; color: #111827; }
+    </style>
+</head>
+<body>
+    <h2>Athan Times Configuration</h2>
+    
+    <div class="dashboard">
+        <h3>Today's Schedule</h3>
+        <div id="schedule_display" class="time-grid">
+            <em>Loading timings from Homey...</em>
+        </div>
+    </div>
+    
+    <div class="field">
+        <label>Suhoor Alarm Offset</label>
+        <input type="number" id="suhoor_offset" value="60" />
+        <div class="description">How many minutes before Fajr should the Suhoor alarm trigger?</div>
+    </div>
+    
+    <div class="field">
+        <label>Hijri Date Adjustment</label>
+        <input type="number" id="hijri_adjustment" value="0" />
+        <div class="description">Use 1 or -1 if your local official moon sighting differs from the standard calculated calendar.</div>
+    </div>
+
+    <button onclick="saveSettings()">Save & Recalculate</button>
+
+    <script type="text/javascript">
+        function onHomeyReady(Homey) {
+            Homey.get('suhoor_offset', function(err, value) {
+                if(value) document.getElementById('suhoor_offset').value = value;
+            });
+            Homey.get('hijri_adjustment', function(err, value) {
+                if(value) document.getElementById('hijri_adjustment').value = value;
+            });
+            
+            Homey.get('calculated_times', function(err, data) {
+                if (data) {
+                    let html = '';
+                    const order = ['Suhoor', 'Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Eid'];
+                    order.forEach(key => {
+                        html += `<div class="time-row"><span class="time-label">${key}</span><span class="time-value">${data[key]}</span></div>`;
+                    });
+                    document.getElementById('schedule_display').innerHTML = html;
+                    document.getElementById('schedule_display').style.display = 'block';
+                } else {
+                    document.getElementById('schedule_display').innerHTML = "<em>No times available yet. Click Save to pull new data.</em>";
+                }
+            });
+            
+            Homey.ready();
+        }
+
+        function saveSettings() {
+            var offset = document.getElementById('suhoor_offset').value;
+            var adj = document.getElementById('hijri_adjustment').value;
+            
+            Homey.set('suhoor_offset', offset);
+            Homey.set('hijri_adjustment', adj);
+            
+            Homey.alert('Settings Saved! Close and reopen this page in a few seconds to see the updated schedule.', 'info');
+        }
+    </script>
+</body>
+</html>
