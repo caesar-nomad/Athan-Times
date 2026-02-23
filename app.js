@@ -23,8 +23,10 @@ class AthanTimesApp extends Homey.App {
     await this.updateSchedule();
     this.homey.setInterval(() => this.checkTimings(), 60000);
 
-    this.homey.settings.on('set', () => {
-      this.log('Settings changed. Recalculating...');
+    // FIX 1: Prevent the Infinite Loop by ignoring our programmatic saves
+    this.homey.settings.on('set', (settingName) => {
+      if (settingName === 'calculated_times') return; 
+      this.log(`Setting changed (${settingName}). Recalculating...`);
       this.updateSchedule();
     });
   }
@@ -37,7 +39,14 @@ class AthanTimesApp extends Homey.App {
       const adj = parseInt(adjSetting, 10);
 
       const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=4&adjustment=${adj}`;
-      const response = await fetch(url);
+      
+      // FIX 2: Add a strict 10-second timeout to prevent RAM leaks
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      
+      const response = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId); // Clear the timeout if the response succeeds
+      
       const json = await response.json();
       
       this.currentTimings = json.data.timings;
@@ -65,6 +74,7 @@ class AthanTimesApp extends Homey.App {
         Suhoor: this.isRamadan ? this.suhoorTime : "Not Ramadan",
         Eid: this.isEid ? "Yes (Today!)" : "No"
       };
+      
       this.homey.settings.set('calculated_times', displayData);
       
       this.log(`Sync Successful. Ready in strict timezone: ${this.apiTimezone}`);
