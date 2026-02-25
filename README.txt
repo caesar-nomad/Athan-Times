@@ -15,6 +15,6 @@ Setup:
 1. Install the app.
 2. Ensure your Homey Pro has its location set correctly.
 3. The app will automatically calculate your times. You can view them by going to Configure App.
-4. Create a new Flow, add the "A prayer starts" THEN card, and select your desired prayer time (or Suhoor/Eid) from the dropdown.
+4. Create a new Flow, add the "Prayer starts" WHEN card, and select your desired prayer time (or Suhoor/Eid) from the dropdown.
 
 This was vibe-coded, by a non-programmer. 

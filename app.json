@@ -4,7 +4,7 @@
   "name": {
     "en": "Athan Times"
   },
-  "version": "1.4.11",
+  "version": "1.4.12",
   "brandColor": "#064e3b",
   "images": {
     "large": "/assets/large.jpeg",
@@ -15,7 +15,6 @@
     "name": "Hatim"
   },
   "permissions": [
-    "homey:manager:api",
     "homey:manager:geolocation"
   ],
   "flow": {
