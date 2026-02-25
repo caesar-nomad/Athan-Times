@@ -4,56 +4,35 @@
   "name": {
     "en": "Athan Times"
   },
+  "description": {
+    "en": "Accurate daily Islamic prayer times and flow triggers based on local GPS coordinates."
+  },
   "version": "1.4.15",
   "compatibility": ">=5.0.0",
   "category": "tools",
+  "tags": {
+    "en": ["islam", "prayer", "ramadan", "athan"]
+  },
   "brandColor": "#064e3b",
+  "author": {
+    "name": "Caesar"
+  },
+  "contributors": {
+    "developers": [
+      { "name": "Caesar" }
+    ]
+  },
+  "homepage": "https://github.com/caesar-nomad/Athan-Times",
+  "source": "https://github.com/caesar-nomad/Athan-Times",
+  "bugs": {
+    "url": "https://github.com/caesar-nomad/Athan-Times/issues"
+  },
+  "support": "mailto:cords_esquire2i@icloud.com",
   "images": {
     "large": "/assets/large.jpeg",
     "small": "/assets/small.jpeg"
   },
-  "author": {
-    "name": "Hatim"
-  },
   "permissions": [
     "homey:manager:geolocation"
-  ],
-  "flow": {
-    "triggers": [
-      {
-        "id": "prayer_started",
-        "title": {
-          "en": "A prayer starts"
-        },
-        "titleFormatted": {
-          "en": "Prayer starts: [[prayer]]"
-        },
-        "args": [
-          {
-            "name": "prayer",
-            "type": "dropdown",
-            "values": [
-              { "id": "Fajr", "label": { "en": "Fajr" } },
-              { "id": "Dhuhr", "label": { "en": "Dhuhr" } },
-              { "id": "Asr", "label": { "en": "Asr" } },
-              { "id": "Maghrib", "label": { "en": "Maghrib" } },
-              { "id": "Isha", "label": { "en": "Isha" } }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "suhoor_alarm",
-        "title": {
-          "en": "Suhoor Alarm (Ramadan Only)"
-        }
-      },
-      {
-        "id": "eid_morning",
-        "title": {
-          "en": "Eid Morning Alarm"
-        }
-      }
-    ]
-  }
+  ]
 }

@@ -4,7 +4,7 @@
   "name": {
     "en": "Athan Times"
   },
-  "version": "1.4.15",
+  "version": "1.4.16",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "brandColor": "#064e3b",
@@ -13,7 +13,7 @@
     "small": "/assets/small.jpeg"
   },
   "author": {
-    "name": "Hatim"
+    "name": "Caesar"
   },
   "permissions": [
     "homey:manager:geolocation"
