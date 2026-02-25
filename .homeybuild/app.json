@@ -4,18 +4,18 @@
   "name": {
     "en": "Athan Times"
   },
-  "version": "1.4.11",
+  "version": "1.4.15",
+  "compatibility": ">=5.0.0",
+  "category": "tools",
   "brandColor": "#064e3b",
   "images": {
     "large": "/assets/large.jpeg",
     "small": "/assets/small.jpeg"
   },
-  "compatibility": ">=5.0.0",
   "author": {
     "name": "Hatim"
   },
   "permissions": [
-    "homey:manager:api",
     "homey:manager:geolocation"
   ],
   "flow": {
