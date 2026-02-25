@@ -4,16 +4,33 @@
   "name": {
     "en": "Athan Times"
   },
-  "version": "1.4.16",
+  "description": {
+    "en": "Accurate daily Islamic prayer times and flow triggers based on local GPS coordinates."
+  },
+  "version": "1.4.17",
   "compatibility": ">=5.0.0",
   "category": "tools",
+  "tags": {
+    "en": ["islam", "prayer", "ramadan", "athan"]
+  },
   "brandColor": "#064e3b",
+  "author": {
+    "name": "Caesar"
+  },
+  "contributors": {
+    "developers": [
+      { "name": "Caesar" }
+    ]
+  },
+  "homepage": "https://github.com/caesar-nomad/Athan-Times",
+  "source": "https://github.com/caesar-nomad/Athan-Times",
+  "bugs": {
+    "url": "https://github.com/caesar-nomad/Athan-Times/issues"
+  },
+  "support": "mailto:cords_esquire2i@icloud.com",
   "images": {
     "large": "/assets/large.jpeg",
     "small": "/assets/small.jpeg"
-  },
-  "author": {
-    "name": "Caesar"
   },
   "permissions": [
     "homey:manager:geolocation"
@@ -22,12 +39,8 @@
     "triggers": [
       {
         "id": "prayer_started",
-        "title": {
-          "en": "A prayer starts"
-        },
-        "titleFormatted": {
-          "en": "Prayer starts: [[prayer]]"
-        },
+        "title": { "en": "A prayer starts" },
+        "titleFormatted": { "en": "Prayer starts: [[prayer]]" },
         "args": [
           {
             "name": "prayer",
@@ -44,15 +57,11 @@
       },
       {
         "id": "suhoor_alarm",
-        "title": {
-          "en": "Suhoor Alarm (Ramadan Only)"
-        }
+        "title": { "en": "Suhoor Alarm (Ramadan Only)" }
       },
       {
         "id": "eid_morning",
-        "title": {
-          "en": "Eid Morning Alarm"
-        }
+        "title": { "en": "Eid Morning Alarm" }
       }
     ]
   }
