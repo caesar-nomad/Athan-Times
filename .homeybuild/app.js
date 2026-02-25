@@ -1,11 +1,13 @@
 const Homey = require('homey');
-const fetch = require('node-fetch');
 
 class AthanTimesApp extends Homey.App {
 
   async onInit() {
-    this.log('Athan Times V1.4.7 Initializing...');
+    this.log('Athan Times V1.4.11 (Native Fetch) Initializing...');
     
+    // Force a garbage collection on boot if available
+    if (global.gc) { global.gc(); }
+
     this.prayerTrigger = this.homey.flow.getTriggerCard('prayer_started');
     this.suhoorTrigger = this.homey.flow.getTriggerCard('suhoor_alarm');
     this.eidTrigger = this.homey.flow.getTriggerCard('eid_morning');
@@ -16,19 +18,24 @@ class AthanTimesApp extends Homey.App {
     
     this.currentTimings = null;
     this.apiTimezone = null; 
-    this.isRamadan = false;
-    this.isEid = false;
-    this.suhoorTime = null;
-
+    
+    // Initial sync
     await this.updateSchedule();
-    this.homey.setInterval(() => this.checkTimings(), 60000);
+    
+    // Check local time every 60 seconds
+    this.checkInterval = this.homey.setInterval(() => this.checkTimings(), 60000);
 
-    // FIX 1: Prevent the Infinite Loop by ignoring our programmatic saves
     this.homey.settings.on('set', (settingName) => {
       if (settingName === 'calculated_times') return; 
       this.log(`Setting changed (${settingName}). Recalculating...`);
       this.updateSchedule();
     });
+  }
+
+  onUninit() {
+    if (this.checkInterval) {
+      this.homey.clearInterval(this.checkInterval);
+    }
   }
 
   async updateSchedule() {
@@ -37,15 +44,20 @@ class AthanTimesApp extends Homey.App {
       const lon = this.homey.geolocation.getLongitude();
       const adjSetting = this.homey.settings.get('hijri_adjustment') || "0";
       const adj = parseInt(adjSetting, 10);
-
       const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=4&adjustment=${adj}`;
       
-      // FIX 2: Add a strict 10-second timeout to prevent RAM leaks
+      this.log('Fetching fresh prayer times natively...');
+      
+      // Node 18 Native Fetch with strict memory abort
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
       
       const response = await fetch(url, { signal: controller.signal });
-      clearTimeout(timeoutId); // Clear the timeout if the response succeeds
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) {
+         throw new Error(`API Status Code: ${response.status}`);
+      }
       
       const json = await response.json();
       
@@ -54,15 +66,18 @@ class AthanTimesApp extends Homey.App {
       
       const hijriMonth = json.data.date.hijri.month.number;
       const hijriDay = parseInt(json.data.date.hijri.day, 10);
-      
       this.isRamadan = (hijriMonth === 9);
       this.isEid = (hijriMonth === 10 && hijriDay === 1);
       
+      let suhoorDisplay = "Not Ramadan";
+      this.suhoorTime = null; 
+
       if (this.isRamadan) {
         const offsetSetting = this.homey.settings.get('suhoor_offset') || "60";
         const offset = parseInt(offsetSetting, 10);
         const cleanFajr = this.currentTimings.Fajr.substring(0, 5);
         this.suhoorTime = this.calculateOffset(cleanFajr, offset);
+        suhoorDisplay = this.suhoorTime;
       }
       
       const displayData = {
@@ -71,15 +86,15 @@ class AthanTimesApp extends Homey.App {
         Asr: this.currentTimings.Asr.substring(0, 5),
         Maghrib: this.currentTimings.Maghrib.substring(0, 5),
         Isha: this.currentTimings.Isha.substring(0, 5),
-        Suhoor: this.isRamadan ? this.suhoorTime : "Not Ramadan",
+        Suhoor: suhoorDisplay,
         Eid: this.isEid ? "Yes (Today!)" : "No"
       };
       
       this.homey.settings.set('calculated_times', displayData);
+      this.log(`Sync Successful.`);
       
-      this.log(`Sync Successful. Ready in strict timezone: ${this.apiTimezone}`);
     } catch (err) {
-      this.error('Critical Sync Error:', err);
+      this.error('Sync Error:', err);
     }
   }
 
@@ -101,19 +116,18 @@ class AthanTimesApp extends Homey.App {
 
     ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'].forEach(p => {
       const apiTime = this.currentTimings[p].substring(0, 5);
-      
       if (apiTime === cur) {
-        this.log(`Triggering Flow for ${p} at ${cur}`);
-        this.prayerTrigger.trigger({}, { prayer: p }).catch(err => this.error(`Trigger Error:`, err));
+        this.log(`Triggering Flow for ${p}`);
+        this.prayerTrigger.trigger({}, { prayer: p }).catch(err => this.error('Trigger Error:', err));
       }
     });
 
     if (this.isRamadan && this.suhoorTime === cur) {
-      this.suhoorTrigger.trigger().catch(this.error);
+      this.suhoorTrigger.trigger().catch(err => this.error('Suhoor Trigger Error:', err));
     }
 
     if (this.isEid && this.currentTimings.Fajr.substring(0, 5) === cur) {
-      this.eidTrigger.trigger().catch(this.error);
+      this.eidTrigger.trigger().catch(err => this.error('Eid Trigger Error:', err));
     }
 
     if (cur === "02:00") this.updateSchedule();
