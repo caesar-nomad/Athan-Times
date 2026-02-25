@@ -4,13 +4,14 @@
   "name": {
     "en": "Athan Times"
   },
-  "version": "1.4.12",
+  "version": "1.4.14",
+  "compatibility": ">=5.0.0",
+  "category": "tools",
   "brandColor": "#064e3b",
   "images": {
     "large": "/assets/large.jpeg",
     "small": "/assets/small.jpeg"
   },
-  "compatibility": ">=5.0.0",
   "author": {
     "name": "Hatim"
   },
