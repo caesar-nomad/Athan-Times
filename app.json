@@ -7,11 +7,16 @@
   "description": {
     "en": "Accurate daily Islamic prayer times and flow triggers based on local GPS coordinates."
   },
-  "version": "1.4.17",
+  "version": "1.4.20",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "tags": {
-    "en": ["islam", "prayer", "ramadan", "athan"]
+    "en": [
+      "islam",
+      "prayer",
+      "ramadan",
+      "athan"
+    ]
   },
   "brandColor": "#064e3b",
   "author": {
@@ -19,7 +24,9 @@
   },
   "contributors": {
     "developers": [
-      { "name": "Caesar" }
+      {
+        "name": "Caesar"
+      }
     ]
   },
   "homepage": "https://github.com/caesar-nomad/Athan-Times",
@@ -39,29 +46,62 @@
     "triggers": [
       {
         "id": "prayer_started",
-        "title": { "en": "A prayer starts" },
-        "titleFormatted": { "en": "Prayer starts: [[prayer]]" },
+        "title": {
+          "en": "A prayer starts"
+        },
+        "titleFormatted": {
+          "en": "Prayer starts: [[prayer]]"
+        },
         "args": [
           {
             "name": "prayer",
             "type": "dropdown",
             "values": [
-              { "id": "Fajr", "label": { "en": "Fajr" } },
-              { "id": "Dhuhr", "label": { "en": "Dhuhr" } },
-              { "id": "Asr", "label": { "en": "Asr" } },
-              { "id": "Maghrib", "label": { "en": "Maghrib" } },
-              { "id": "Isha", "label": { "en": "Isha" } }
+              {
+                "id": "Fajr",
+                "label": {
+                  "en": "Fajr"
+                }
+              },
+              {
+                "id": "Dhuhr",
+                "label": {
+                  "en": "Dhuhr"
+                }
+              },
+              {
+                "id": "Asr",
+                "label": {
+                  "en": "Asr"
+                }
+              },
+              {
+                "id": "Maghrib",
+                "label": {
+                  "en": "Maghrib"
+                }
+              },
+              {
+                "id": "Isha",
+                "label": {
+                  "en": "Isha"
+                }
+              }
             ]
           }
         ]
       },
       {
         "id": "suhoor_alarm",
-        "title": { "en": "Suhoor Alarm (Ramadan Only)" }
+        "title": {
+          "en": "Suhoor Alarm (Ramadan Only)"
+        }
       },
       {
         "id": "eid_morning",
-        "title": { "en": "Eid Morning Alarm" }
+        "title": {
+          "en": "Eid Morning Alarm"
+        }
       }
     ]
   }

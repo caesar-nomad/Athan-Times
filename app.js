@@ -3,9 +3,7 @@ const Homey = require('homey');
 class AthanTimesApp extends Homey.App {
 
   async onInit() {
-    this.log('Athan Times V1.4.11 (Native Fetch) Initializing...');
-    
-    // Force a garbage collection on boot if available
+    this.log('Athan Times V1.4.20 Initializing...');
     if (global.gc) { global.gc(); }
 
     this.prayerTrigger = this.homey.flow.getTriggerCard('prayer_started');
@@ -18,12 +16,11 @@ class AthanTimesApp extends Homey.App {
     
     this.currentTimings = null;
     this.apiTimezone = null; 
+    this.lastTriggeredMinute = null; 
     
-    // Initial sync
     await this.updateSchedule();
     
-    // Check local time every 60 seconds
-    this.checkInterval = this.homey.setInterval(() => this.checkTimings(), 60000);
+    this.checkInterval = this.homey.setInterval(() => this.checkTimings(), 15000);
 
     this.homey.settings.on('set', (settingName) => {
       if (settingName === 'calculated_times') return; 
@@ -46,19 +43,12 @@ class AthanTimesApp extends Homey.App {
       const adj = parseInt(adjSetting, 10);
       const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=4&adjustment=${adj}`;
       
-      this.log('Fetching fresh prayer times natively...');
-      
-      // Node 18 Native Fetch with strict memory abort
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
-      
       const response = await fetch(url, { signal: controller.signal });
       clearTimeout(timeoutId);
       
-      if (!response.ok) {
-         throw new Error(`API Status Code: ${response.status}`);
-      }
-      
+      if (!response.ok) throw new Error(`API Status: ${response.status}`);
       const json = await response.json();
       
       this.currentTimings = json.data.timings;
@@ -91,7 +81,7 @@ class AthanTimesApp extends Homey.App {
       };
       
       this.homey.settings.set('calculated_times', displayData);
-      this.log(`Sync Successful.`);
+      this.log(`Sync Successful. Fajr: ${displayData.Fajr}, Suhoor: ${displayData.Suhoor}`);
       
     } catch (err) {
       this.error('Sync Error:', err);
@@ -99,38 +89,80 @@ class AthanTimesApp extends Homey.App {
   }
 
   calculateOffset(timeStr, offset) {
-    const [h, m] = timeStr.split(':').map(Number);
-    const d = new Date();
-    d.setHours(h, m, 0);
-    d.setMinutes(d.getMinutes() - offset);
-    return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+    const parts = timeStr.split(':');
+    const h = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    
+    let totalMins = (h * 60) + m - offset;
+    if (totalMins < 0) totalMins += 24 * 60; 
+    
+    const newH = Math.floor(totalMins / 60);
+    const newM = totalMins % 60;
+    
+    return `${String(newH).padStart(2, '0')}:${String(newM).padStart(2, '0')}`;
   }
 
   checkTimings() {
     if (!this.currentTimings || !this.apiTimezone) return;
 
     const now = new Date();
-    const localString = now.toLocaleString('en-US', { timeZone: this.apiTimezone });
-    const localDate = new Date(localString);
-    const cur = `${String(localDate.getHours()).padStart(2, '0')}:${String(localDate.getMinutes()).padStart(2, '0')}`;
+    let curH, curM;
+    
+    try {
+      // Force extraction of raw parts to bypass formatting anomalies
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: this.apiTimezone,
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: false
+      }).formatToParts(now);
+      
+      curH = parts.find(p => p.type === 'hour').value;
+      curM = parts.find(p => p.type === 'minute').value;
+    } catch (e) {
+      // Ironclad fallback
+      curH = String(now.getHours());
+      curM = String(now.getMinutes());
+    }
+    
+    // Mathematically guarantee 24-hour cycle and leading zeros
+    if (curH === '24') curH = '00';
+    const cur = `${String(curH).padStart(2, '0')}:${String(curM).padStart(2, '0')}`;
+
+    if (this.lastTriggeredMinute === cur) return;
+
+    let triggeredSomething = false;
 
     ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'].forEach(p => {
       const apiTime = this.currentTimings[p].substring(0, 5);
       if (apiTime === cur) {
-        this.log(`Triggering Flow for ${p}`);
+        this.log(`Triggering Flow for ${p} at ${cur}`);
         this.prayerTrigger.trigger({}, { prayer: p }).catch(err => this.error('Trigger Error:', err));
+        triggeredSomething = true;
       }
     });
 
     if (this.isRamadan && this.suhoorTime === cur) {
+      this.log(`Triggering Suhoor Alarm at ${cur}`);
       this.suhoorTrigger.trigger().catch(err => this.error('Suhoor Trigger Error:', err));
+      triggeredSomething = true;
     }
 
     if (this.isEid && this.currentTimings.Fajr.substring(0, 5) === cur) {
+      this.log(`Triggering Eid Alarm at ${cur}`);
       this.eidTrigger.trigger().catch(err => this.error('Eid Trigger Error:', err));
+      triggeredSomething = true;
     }
 
-    if (cur === "02:00") this.updateSchedule();
+    if (triggeredSomething) {
+       this.lastTriggeredMinute = cur;
+    }
+
+    // Daily Sync
+    if (cur === "02:00" && this.lastTriggeredMinute !== "02:00") {
+      this.lastTriggeredMinute = "02:00"; 
+      this.updateSchedule();
+    }
   }
 }
 
