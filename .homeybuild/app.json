@@ -2,16 +2,23 @@
   "id": "com.riyadh.athan",
   "sdk": 3,
   "name": {
-    "en": "Athan Times"
+    "en": "Athan Times",
+    "ar": "أوقات الأذان"
   },
   "description": {
-    "en": "Accurate daily Islamic prayer times and flow triggers based on local GPS coordinates."
+    "en": "Never miss a prayer, wherever you are.",
+    "ar": "لا تفوت صلاتك"
   },
-  "version": "1.4.15",
+  "version": "1.4.21",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "tags": {
-    "en": ["islam", "prayer", "ramadan", "athan"]
+    "en": [
+      "islam",
+      "prayer",
+      "ramadan",
+      "athan"
+    ]
   },
   "brandColor": "#064e3b",
   "author": {
@@ -19,7 +26,9 @@
   },
   "contributors": {
     "developers": [
-      { "name": "Caesar" }
+      {
+        "name": "Caesar"
+      }
     ]
   },
   "homepage": "https://github.com/caesar-nomad/Athan-Times",
@@ -34,5 +43,77 @@
   },
   "permissions": [
     "homey:manager:geolocation"
-  ]
+  ],
+  "flow": {
+    "triggers": [
+      {
+        "id": "prayer_started",
+        "title": {
+          "en": "A prayer starts",
+          "ar": "حان وقت الصلاة"
+        },
+        "titleFormatted": {
+          "en": "Prayer starts: [[prayer]]",
+          "ar": "حان وقت: [[prayer]]"
+        },
+        "args": [
+          {
+            "name": "prayer",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "Fajr",
+                "label": {
+                  "en": "Fajr",
+                  "ar": "الفجر"
+                }
+              },
+              {
+                "id": "Dhuhr",
+                "label": {
+                  "en": "Dhuhr",
+                  "ar": "الظهر"
+                }
+              },
+              {
+                "id": "Asr",
+                "label": {
+                  "en": "Asr",
+                  "ar": "العصر"
+                }
+              },
+              {
+                "id": "Maghrib",
+                "label": {
+                  "en": "Maghrib",
+                  "ar": "المغرب"
+                }
+              },
+              {
+                "id": "Isha",
+                "label": {
+                  "en": "Isha",
+                  "ar": "العشاء"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "suhoor_alarm",
+        "title": {
+          "en": "Suhoor Alarm (Ramadan Only)",
+          "ar": "تنبيه السحور (رمضان فقط)"
+        }
+      },
+      {
+        "id": "eid_morning",
+        "title": {
+          "en": "Eid Morning Alarm",
+          "ar": "تنبيه صباح العيد"
+        }
+      }
+    ]
+  }
 }

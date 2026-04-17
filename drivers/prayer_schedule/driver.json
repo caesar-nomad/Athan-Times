@@ -1,0 +1,47 @@
+{
+  "id": "prayer_schedule",
+  "name": {
+    "en": "Prayer Schedule",
+    "ar": "جدول الصلوات"
+  },
+  "class": "sensor",
+  "capabilities": [
+    "is_ramadan",
+    "prayer_time.suhoor",
+    "prayer_time.fajr",
+    "prayer_time.dhuhr",
+    "prayer_time.asr",
+    "prayer_time.maghrib",
+    "prayer_time.isha"
+  ],
+  "capabilitiesOptions": {
+    "prayer_time.suhoor": {
+      "title": { "en": "Suhoor", "ar": "السحور" },
+      "preventInsights": true
+    },
+    "prayer_time.fajr": {
+      "title": { "en": "Fajr", "ar": "الفجر" },
+      "preventInsights": true
+    },
+    "prayer_time.dhuhr": {
+      "title": { "en": "Dhuhr", "ar": "الظهر" },
+      "preventInsights": true
+    },
+    "prayer_time.asr": {
+      "title": { "en": "Asr", "ar": "العصر" },
+      "preventInsights": true
+    },
+    "prayer_time.maghrib": {
+      "title": { "en": "Maghrib", "ar": "المغرب" },
+      "preventInsights": true
+    },
+    "prayer_time.isha": {
+      "title": { "en": "Isha", "ar": "العشاء" },
+      "preventInsights": true
+    }
+  },
+  "images": {
+    "small": "/drivers/prayer_schedule/assets/images/small.png",
+    "large": "/drivers/prayer_schedule/assets/images/large.png"
+  }
+}

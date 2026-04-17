@@ -1,0 +1,7 @@
+{
+  "type": "string",
+  "title": { "en": "Prayer Time", "ar": "وقت الصلاة" },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor"
+}
