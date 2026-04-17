@@ -1,7 +1,11 @@
 {
-  "type": "string",
+  "type": "number",
   "title": { "en": "Prayer Time", "ar": "وقت الصلاة" },
   "getable": true,
   "setable": false,
-  "uiComponent": null
+  "uiComponent": "sensor",
+  "units": { "en": "min" },
+  "min": 0,
+  "max": 1439,
+  "decimals": 0
 }

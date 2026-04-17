@@ -62,6 +62,9 @@
         "prayer_time.isha"
       ],
       "capabilitiesOptions": {
+        "is_ramadan": {
+          "preventInsights": true
+        },
         "prayer_time.suhoor": {
           "title": {
             "en": "Suhoor",
@@ -123,14 +126,20 @@
       "uiComponent": "sensor"
     },
     "prayer_time": {
-      "type": "string",
+      "type": "number",
       "title": {
         "en": "Prayer Time",
         "ar": "وقت الصلاة"
       },
       "getable": true,
       "setable": false,
-      "uiComponent": null
+      "uiComponent": "sensor",
+      "units": {
+        "en": "min"
+      },
+      "min": 0,
+      "max": 1439,
+      "decimals": 0
     }
   }
 }

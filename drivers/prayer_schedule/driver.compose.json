@@ -15,6 +15,9 @@
     "prayer_time.isha"
   ],
   "capabilitiesOptions": {
+    "is_ramadan": {
+      "preventInsights": true
+    },
     "prayer_time.suhoor": {
       "title": { "en": "Suhoor", "ar": "السحور" },
       "preventInsights": true
