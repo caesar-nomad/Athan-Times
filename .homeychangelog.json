@@ -7,5 +7,8 @@
   },
   "1.4.21": {
     "en": "Improve app store listing for Athom review"
+  },
+  "1.4.23": {
+    "en": "Exposed Athan times for access by other apps"
   }
 }
