@@ -41,6 +41,13 @@
     "large": "/assets/large.jpeg",
     "small": "/assets/small.jpeg"
   },
+  "api": {
+    "getPrayerTimes": {
+      "method": "GET",
+      "path": "/prayer-times",
+      "public": false
+    }
+  },
   "permissions": [
     "homey:manager:geolocation"
   ],
