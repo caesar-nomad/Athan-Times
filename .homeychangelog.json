@@ -1,5 +1,8 @@
 {
+  "1.4.20": {
+    "en": "Improved timezone handling and trigger reliability"
+  },
   "1.4.15": {
-    "en": "First public version"
+    "en": "First public release"
   }
 }

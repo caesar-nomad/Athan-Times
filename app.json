@@ -2,10 +2,12 @@
   "id": "com.riyadh.athan",
   "sdk": 3,
   "name": {
-    "en": "Athan Times"
+    "en": "Athan Times",
+    "ar": "أوقات الأذان"
   },
   "description": {
-    "en": "Accurate daily Islamic prayer times and flow triggers based on local GPS coordinates."
+    "en": "Never miss a prayer, wherever you are.",
+    "ar": "لا تفوت صلاتك"
   },
   "version": "1.4.20",
   "compatibility": ">=5.0.0",
@@ -47,10 +49,12 @@
       {
         "id": "prayer_started",
         "title": {
-          "en": "A prayer starts"
+          "en": "A prayer starts",
+          "ar": "حان وقت الصلاة"
         },
         "titleFormatted": {
-          "en": "Prayer starts: [[prayer]]"
+          "en": "Prayer starts: [[prayer]]",
+          "ar": "حان وقت: [[prayer]]"
         },
         "args": [
           {
@@ -60,31 +64,36 @@
               {
                 "id": "Fajr",
                 "label": {
-                  "en": "Fajr"
+                  "en": "Fajr",
+                  "ar": "الفجر"
                 }
               },
               {
                 "id": "Dhuhr",
                 "label": {
-                  "en": "Dhuhr"
+                  "en": "Dhuhr",
+                  "ar": "الظهر"
                 }
               },
               {
                 "id": "Asr",
                 "label": {
-                  "en": "Asr"
+                  "en": "Asr",
+                  "ar": "العصر"
                 }
               },
               {
                 "id": "Maghrib",
                 "label": {
-                  "en": "Maghrib"
+                  "en": "Maghrib",
+                  "ar": "المغرب"
                 }
               },
               {
                 "id": "Isha",
                 "label": {
-                  "en": "Isha"
+                  "en": "Isha",
+                  "ar": "العشاء"
                 }
               }
             ]
@@ -94,13 +103,15 @@
       {
         "id": "suhoor_alarm",
         "title": {
-          "en": "Suhoor Alarm (Ramadan Only)"
+          "en": "Suhoor Alarm (Ramadan Only)",
+          "ar": "تنبيه السحور (رمضان فقط)"
         }
       },
       {
         "id": "eid_morning",
         "title": {
-          "en": "Eid Morning Alarm"
+          "en": "Eid Morning Alarm",
+          "ar": "تنبيه صباح العيد"
         }
       }
     ]

@@ -15,9 +15,10 @@ class AthanTimesApp extends Homey.App {
     });
     
     this.currentTimings = null;
-    this.apiTimezone = null; 
-    this.lastTriggeredMinute = null; 
-    
+    this.apiTimezone = null;
+    this.lastTriggeredMinute = null;
+    this.syncRetryCount = 0;
+
     await this.updateSchedule();
     
     this.checkInterval = this.homey.setInterval(() => this.checkTimings(), 15000);
@@ -36,6 +37,7 @@ class AthanTimesApp extends Homey.App {
   }
 
   async updateSchedule() {
+    this.syncRetryCount = (this.syncRetryCount || 0);
     try {
       const lat = this.homey.geolocation.getLatitude();
       const lon = this.homey.geolocation.getLongitude();
@@ -81,10 +83,20 @@ class AthanTimesApp extends Homey.App {
       };
       
       this.homey.settings.set('calculated_times', displayData);
+      this.syncRetryCount = 0;
       this.log(`Sync Successful. Fajr: ${displayData.Fajr}, Suhoor: ${displayData.Suhoor}`);
-      
+
     } catch (err) {
       this.error('Sync Error:', err);
+      if (this.syncRetryCount < 5) {
+        this.syncRetryCount++;
+        const retryDelay = this.syncRetryCount * 5 * 60 * 1000; // 5, 10, 15, 20, 25 min
+        this.log(`Sync failed. Retry ${this.syncRetryCount}/5 in ${this.syncRetryCount * 5} minutes...`);
+        this.homey.setTimeout(() => this.updateSchedule(), retryDelay);
+      } else {
+        this.error('Sync failed after 5 retries. Will try again at next daily sync.');
+        this.syncRetryCount = 0;
+      }
     }
   }
 
