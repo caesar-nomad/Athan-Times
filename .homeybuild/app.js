@@ -18,6 +18,7 @@ class AthanTimesApp extends Homey.App {
     this.apiTimezone = null;
     this.lastTriggeredMinute = null;
     this.syncRetryCount = 0;
+    this._scheduleDevices = [];
 
     await this.updateSchedule();
     
@@ -86,6 +87,11 @@ class AthanTimesApp extends Homey.App {
       this.syncRetryCount = 0;
       this.log(`Sync Successful. Fajr: ${displayData.Fajr}, Suhoor: ${displayData.Suhoor}`);
 
+      // Push to virtual device(s)
+      for (const device of this._scheduleDevices) {
+        device.updateSchedule(this.currentTimings, this.suhoorTime, this.isRamadan).catch(err => this.error('Device update error:', err));
+      }
+
     } catch (err) {
       this.error('Sync Error:', err);
       if (this.syncRetryCount < 5) {
@@ -112,6 +118,20 @@ class AthanTimesApp extends Homey.App {
     const newM = totalMins % 60;
     
     return `${String(newH).padStart(2, '0')}:${String(newM).padStart(2, '0')}`;
+  }
+
+  registerScheduleDevice(device) {
+    if (!this._scheduleDevices.includes(device)) {
+      this._scheduleDevices.push(device);
+      // Push current data immediately on register
+      if (this.currentTimings) {
+        device.updateSchedule(this.currentTimings, this.suhoorTime, this.isRamadan).catch(err => this.error('Device init update error:', err));
+      }
+    }
+  }
+
+  unregisterScheduleDevice(device) {
+    this._scheduleDevices = this._scheduleDevices.filter(d => d !== device);
   }
 
   checkTimings() {
