@@ -9,7 +9,7 @@
     "en": "Never miss a prayer, wherever you are.",
     "ar": "لا تفوت صلاتك"
   },
-  "version": "1.4.23",
+  "version": "1.4.24",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "tags": {
@@ -120,15 +120,7 @@
       },
       "getable": true,
       "setable": false,
-      "uiComponent": "sensor",
-      "titleTrue": {
-        "en": "Yes",
-        "ar": "نعم"
-      },
-      "titleFalse": {
-        "en": "No",
-        "ar": "لا"
-      }
+      "uiComponent": "sensor"
     },
     "prayer_time": {
       "type": "string",
@@ -138,7 +130,7 @@
       },
       "getable": true,
       "setable": false,
-      "uiComponent": "sensor"
+      "uiComponent": null
     }
   }
 }
