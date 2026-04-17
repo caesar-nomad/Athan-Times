@@ -3,8 +3,12 @@ const Homey = require('homey');
 class PrayerScheduleDevice extends Homey.Device {
 
   async onInit() {
-    this.log('Prayer Schedule Device initialized');
-    this._tryRegister(0);
+    try {
+      this.log('Prayer Schedule Device initialized');
+      this._tryRegister(0);
+    } catch (err) {
+      this.error('Device onInit crash:', err);
+    }
   }
 
   _tryRegister(attempt) {

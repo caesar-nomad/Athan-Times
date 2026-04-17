@@ -3,6 +3,7 @@ const Homey = require('homey');
 class AthanTimesApp extends Homey.App {
 
   async onInit() {
+    try {
     this.log('Athan Times V1.4.20 Initializing...');
     if (global.gc) { global.gc(); }
 
@@ -29,6 +30,9 @@ class AthanTimesApp extends Homey.App {
       this.log(`Setting changed (${settingName}). Recalculating...`);
       this.updateSchedule();
     });
+    } catch (err) {
+      this.error('App onInit crash:', err);
+    }
   }
 
   onUninit() {
