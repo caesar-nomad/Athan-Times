@@ -3,7 +3,5 @@
   "title": { "en": "Ramadan", "ar": "رمضان" },
   "getable": true,
   "setable": false,
-  "uiComponent": "sensor",
-  "titleTrue": { "en": "Yes", "ar": "نعم" },
-  "titleFalse": { "en": "No", "ar": "لا" }
+  "uiComponent": "sensor"
 }
