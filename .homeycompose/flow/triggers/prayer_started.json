@@ -1,0 +1,24 @@
+{
+  "id": "prayer_started",
+  "title": {
+    "en": "A prayer starts",
+    "ar": "حان وقت الصلاة"
+  },
+  "titleFormatted": {
+    "en": "Prayer starts: [[prayer]]",
+    "ar": "حان وقت: [[prayer]]"
+  },
+  "args": [
+    {
+      "name": "prayer",
+      "type": "dropdown",
+      "values": [
+        { "id": "Fajr",    "label": { "en": "Fajr",    "ar": "الفجر"  } },
+        { "id": "Dhuhr",   "label": { "en": "Dhuhr",   "ar": "الظهر"  } },
+        { "id": "Asr",     "label": { "en": "Asr",     "ar": "العصر"  } },
+        { "id": "Maghrib", "label": { "en": "Maghrib", "ar": "المغرب" } },
+        { "id": "Isha",    "label": { "en": "Isha",    "ar": "العشاء" } }
+      ]
+    }
+  ]
+}
