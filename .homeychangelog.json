@@ -19,5 +19,8 @@
   },
   "1.4.26": {
     "en": "Better error catching"
+  },
+  "1.4.27": {
+    "en": "Exposing athan times via web API"
   }
 }
