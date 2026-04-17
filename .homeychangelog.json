@@ -16,5 +16,8 @@
   },
   "1.4.25": {
     "en": "bug fixes"
+  },
+  "1.4.26": {
+    "en": "Better error catching"
   }
 }
