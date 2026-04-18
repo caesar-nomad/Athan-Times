@@ -9,7 +9,7 @@
     "en": "Never miss a prayer, wherever you are.",
     "ar": "لا تفوت صلاتك"
   },
-  "version": "1.4.22",
+  "version": "1.4.31",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "tags": {
@@ -41,9 +41,99 @@
     "large": "/assets/large.jpeg",
     "small": "/assets/small.jpeg"
   },
+  "api": {
+    "getPrayerTimes": {
+      "method": "GET",
+      "path": "/prayer-times",
+      "public": false
+    }
+  },
   "permissions": [
     "homey:manager:geolocation"
   ],
+  "changelog": {
+    "1.4.29": {
+      "en": "Add global Flow tokens for prayer times (athan_fajr, athan_dhuhr, athan_asr, athan_maghrib, athan_isha, athan_suhoor, athan_is_ramadan, athan_is_eid) — readable by any app or flow"
+    },
+    "1.4.30": {
+      "en": "Fix Prayer Schedule device pairing — now appears in Add Device"
+    },
+    "1.4.31": {
+      "en": "Fix Prayer Schedule device not appearing in pairing list"
+    }
+  },
+  "flow": {
+    "triggers": [
+      {
+        "id": "eid_morning",
+        "title": {
+          "en": "Eid Morning Alarm",
+          "ar": "تنبيه صباح العيد"
+        }
+      },
+      {
+        "id": "prayer_started",
+        "title": {
+          "en": "A prayer starts",
+          "ar": "حان وقت الصلاة"
+        },
+        "titleFormatted": {
+          "en": "Prayer starts: [[prayer]]",
+          "ar": "حان وقت: [[prayer]]"
+        },
+        "args": [
+          {
+            "name": "prayer",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "Fajr",
+                "label": {
+                  "en": "Fajr",
+                  "ar": "الفجر"
+                }
+              },
+              {
+                "id": "Dhuhr",
+                "label": {
+                  "en": "Dhuhr",
+                  "ar": "الظهر"
+                }
+              },
+              {
+                "id": "Asr",
+                "label": {
+                  "en": "Asr",
+                  "ar": "العصر"
+                }
+              },
+              {
+                "id": "Maghrib",
+                "label": {
+                  "en": "Maghrib",
+                  "ar": "المغرب"
+                }
+              },
+              {
+                "id": "Isha",
+                "label": {
+                  "en": "Isha",
+                  "ar": "العشاء"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "suhoor_alarm",
+        "title": {
+          "en": "Suhoor Alarm (Ramadan Only)",
+          "ar": "تنبيه السحور (رمضان فقط)"
+        }
+      }
+    ]
+  },
   "drivers": [
     {
       "id": "prayer_schedule",
@@ -62,6 +152,9 @@
         "prayer_time.isha"
       ],
       "capabilitiesOptions": {
+        "is_ramadan": {
+          "preventInsights": true
+        },
         "prayer_time.suhoor": {
           "title": {
             "en": "Suhoor",
@@ -120,25 +213,23 @@
       },
       "getable": true,
       "setable": false,
-      "uiComponent": "sensor",
-      "titleTrue": {
-        "en": "Yes",
-        "ar": "نعم"
-      },
-      "titleFalse": {
-        "en": "No",
-        "ar": "لا"
-      }
+      "uiComponent": "sensor"
     },
     "prayer_time": {
-      "type": "string",
+      "type": "number",
       "title": {
         "en": "Prayer Time",
         "ar": "وقت الصلاة"
       },
       "getable": true,
       "setable": false,
-      "uiComponent": "sensor"
+      "uiComponent": "sensor",
+      "units": {
+        "en": "min"
+      },
+      "min": 0,
+      "max": 1439,
+      "decimals": 0
     }
   }
 }

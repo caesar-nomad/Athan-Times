@@ -25,5 +25,14 @@
   },
   "1.4.28": {
     "en": "Bringing back flow cards"
+  },
+  "1.4.29": {
+    "en": "Add global Flow tokens for prayer times — readable by any app or flow"
+  },
+  "1.4.30": {
+    "en": "Fix Prayer Schedule device pairing — now appears in Add Device list"
+  },
+  "1.4.31": {
+    "en": "Fix Prayer Schedule device not appearing in pairing list"
   }
 }

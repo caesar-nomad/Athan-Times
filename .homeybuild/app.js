@@ -3,6 +3,7 @@ const Homey = require('homey');
 class AthanTimesApp extends Homey.App {
 
   async onInit() {
+    try {
     this.log('Athan Times V1.4.20 Initializing...');
     if (global.gc) { global.gc(); }
 
@@ -20,6 +21,16 @@ class AthanTimesApp extends Homey.App {
     this.syncRetryCount = 0;
     this._scheduleDevices = [];
 
+    // Register global Flow tokens (readable by any app/flow)
+    this._fajrToken    = await this.homey.flow.createToken('athan_fajr',    { type: 'string',  title: 'Fajr Time' });
+    this._dhuhrToken   = await this.homey.flow.createToken('athan_dhuhr',   { type: 'string',  title: 'Dhuhr Time' });
+    this._asrToken     = await this.homey.flow.createToken('athan_asr',     { type: 'string',  title: 'Asr Time' });
+    this._maghribToken = await this.homey.flow.createToken('athan_maghrib', { type: 'string',  title: 'Maghrib Time' });
+    this._ishaToken    = await this.homey.flow.createToken('athan_isha',    { type: 'string',  title: 'Isha Time' });
+    this._suhoorToken  = await this.homey.flow.createToken('athan_suhoor',  { type: 'string',  title: 'Suhoor Time' });
+    this._isRamadanToken = await this.homey.flow.createToken('athan_is_ramadan', { type: 'boolean', title: 'Is Ramadan' });
+    this._isEidToken     = await this.homey.flow.createToken('athan_is_eid',     { type: 'boolean', title: 'Is Eid' });
+
     await this.updateSchedule();
     
     this.checkInterval = this.homey.setInterval(() => this.checkTimings(), 15000);
@@ -29,6 +40,9 @@ class AthanTimesApp extends Homey.App {
       this.log(`Setting changed (${settingName}). Recalculating...`);
       this.updateSchedule();
     });
+    } catch (err) {
+      this.error('App onInit crash:', err);
+    }
   }
 
   onUninit() {
@@ -86,6 +100,16 @@ class AthanTimesApp extends Homey.App {
       this.homey.settings.set('calculated_times', displayData);
       this.syncRetryCount = 0;
       this.log(`Sync Successful. Fajr: ${displayData.Fajr}, Suhoor: ${displayData.Suhoor}`);
+
+      // Update global Flow tokens so other apps/flows can read prayer times
+      await this._fajrToken.setValue(displayData.Fajr);
+      await this._dhuhrToken.setValue(displayData.Dhuhr);
+      await this._asrToken.setValue(displayData.Asr);
+      await this._maghribToken.setValue(displayData.Maghrib);
+      await this._ishaToken.setValue(displayData.Isha);
+      await this._suhoorToken.setValue(displayData.Suhoor);
+      await this._isRamadanToken.setValue(this.isRamadan);
+      await this._isEidToken.setValue(this.isEid);
 
       // Push to virtual device(s)
       for (const device of this._scheduleDevices) {
