@@ -9,7 +9,7 @@
     "en": "Never miss a prayer, wherever you are.",
     "ar": "لا تفوت صلاتك"
   },
-  "version": "1.4.30",
+  "version": "1.4.31",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "tags": {
@@ -57,6 +57,9 @@
     },
     "1.4.30": {
       "en": "Fix Prayer Schedule device pairing — now appears in Add Device"
+    },
+    "1.4.31": {
+      "en": "Fix Prayer Schedule device not appearing in pairing list"
     }
   },
   "flow": {
@@ -198,20 +201,7 @@
       "images": {
         "small": "/drivers/prayer_schedule/assets/images/small.png",
         "large": "/drivers/prayer_schedule/assets/images/large.png"
-      },
-      "pair": [
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ]
+      }
     }
   ],
   "capabilities": {

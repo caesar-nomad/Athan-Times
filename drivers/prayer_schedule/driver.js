@@ -13,8 +13,8 @@ class PrayerScheduleDriver extends Homey.Driver {
   async onPairListDevices() {
     return [
       {
-        name: this.homey.__('driver.device_name') || 'Prayer Schedule',
-        data: { id: 'prayer-schedule-singleton' },
+        name: 'Prayer Schedule',
+        data: { id: 'prayer-schedule-' + Date.now() },
       },
     ];
   }
