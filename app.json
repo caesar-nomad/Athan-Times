@@ -9,7 +9,7 @@
     "en": "Never miss a prayer, wherever you are.",
     "ar": "لا تفوت صلاتك"
   },
-  "version": "1.4.33",
+  "version": "2.0.0",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "tags": {
@@ -66,6 +66,9 @@
     },
     "1.4.33": {
       "en": "Fix Prayer Schedule device pairing — driver.compose.json in correct location"
+    },
+    "2.0.0": {
+      "en": "Major update: Added Prayer Schedule virtual device exposing all prayer times as capabilities (readable by other apps like Gemini). Added global Flow tokens for all prayer times. Added Web API endpoint for external integrations. Added Arabic localization. Added retry logic for daily sync. Fixed flow cards after Homey Compose migration."
     }
   },
   "flow": {
