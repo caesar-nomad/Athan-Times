@@ -9,7 +9,7 @@
     "en": "Never miss a prayer, wherever you are.",
     "ar": "لا تفوت صلاتك"
   },
-  "version": "1.4.29",
+  "version": "1.4.30",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "tags": {
@@ -51,6 +51,14 @@
   "permissions": [
     "homey:manager:geolocation"
   ],
+  "changelog": {
+    "1.4.29": {
+      "en": "Add global Flow tokens for prayer times (athan_fajr, athan_dhuhr, athan_asr, athan_maghrib, athan_isha, athan_suhoor, athan_is_ramadan, athan_is_eid) — readable by any app or flow"
+    },
+    "1.4.30": {
+      "en": "Fix Prayer Schedule device pairing — now appears in Add Device"
+    }
+  },
   "flow": {
     "triggers": [
       {
@@ -190,7 +198,20 @@
       "images": {
         "small": "/drivers/prayer_schedule/assets/images/small.png",
         "large": "/drivers/prayer_schedule/assets/images/large.png"
-      }
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
     }
   ],
   "capabilities": {
@@ -219,11 +240,6 @@
       "min": 0,
       "max": 1439,
       "decimals": 0
-    }
-  },
-  "changelog": {
-    "1.4.29": {
-      "en": "Add global Flow tokens for prayer times (athan_fajr, athan_dhuhr, athan_asr, athan_maghrib, athan_isha, athan_suhoor, athan_is_ramadan, athan_is_eid) — readable by any app or flow"
     }
   }
 }
