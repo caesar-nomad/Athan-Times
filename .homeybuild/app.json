@@ -9,7 +9,7 @@
     "en": "Never miss a prayer, wherever you are.",
     "ar": "لا تفوت صلاتك"
   },
-  "version": "1.4.31",
+  "version": "1.4.32",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "tags": {
@@ -60,6 +60,9 @@
     },
     "1.4.31": {
       "en": "Fix Prayer Schedule device not appearing in pairing list"
+    },
+    "1.4.32": {
+      "en": "Fix Prayer Schedule device pairing via Homey Compose driver manifest"
     }
   },
   "flow": {
@@ -136,7 +139,6 @@
   },
   "drivers": [
     {
-      "id": "prayer_schedule",
       "name": {
         "en": "Prayer Schedule",
         "ar": "جدول الصلوات"
@@ -198,10 +200,24 @@
           "preventInsights": true
         }
       },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
       "images": {
         "small": "/drivers/prayer_schedule/assets/images/small.png",
         "large": "/drivers/prayer_schedule/assets/images/large.png"
-      }
+      },
+      "id": "prayer_schedule"
     }
   ],
   "capabilities": {

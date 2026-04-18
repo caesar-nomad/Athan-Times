@@ -1,5 +1,4 @@
 {
-  "id": "prayer_schedule",
   "name": {
     "en": "Prayer Schedule",
     "ar": "جدول الصلوات"
@@ -43,6 +42,17 @@
       "preventInsights": true
     }
   },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": { "next": "add_devices" }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
   "images": {
     "small": "/drivers/prayer_schedule/assets/images/small.png",
     "large": "/drivers/prayer_schedule/assets/images/large.png"
