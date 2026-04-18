@@ -9,7 +9,7 @@
     "en": "Never miss a prayer, wherever you are.",
     "ar": "لا تفوت صلاتك"
   },
-  "version": "1.4.28",
+  "version": "1.4.29",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "tags": {
@@ -219,6 +219,11 @@
       "min": 0,
       "max": 1439,
       "decimals": 0
+    }
+  },
+  "changelog": {
+    "1.4.29": {
+      "en": "Add global Flow tokens for prayer times (athan_fajr, athan_dhuhr, athan_asr, athan_maghrib, athan_isha, athan_suhoor, athan_is_ramadan, athan_is_eid) — readable by any app or flow"
     }
   }
 }
