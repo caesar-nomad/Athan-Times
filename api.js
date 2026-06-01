@@ -16,7 +16,6 @@ module.exports = {
       isha:      toTime(app.currentTimings.Isha),
       suhoor:    app.suhoorTime || null,
       is_ramadan: !!app.isRamadan,
-      is_eid:    !!app.isEid,
     };
   },
 };

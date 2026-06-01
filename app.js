@@ -9,7 +9,6 @@ class AthanTimesApp extends Homey.App {
 
     this.prayerTrigger = this.homey.flow.getTriggerCard('prayer_started');
     this.suhoorTrigger = this.homey.flow.getTriggerCard('suhoor_alarm');
-    this.eidTrigger = this.homey.flow.getTriggerCard('eid_morning');
 
     this.prayerTrigger.registerRunListener(async (args, state) => {
       return args.prayer === state.prayer;
@@ -19,7 +18,6 @@ class AthanTimesApp extends Homey.App {
     this.apiTimezone = null;
     this.lastTriggeredMinute = null;
     this.syncRetryCount = 0;
-    this._scheduleDevices = [];
 
     // Register global Flow tokens (readable by any app/flow)
     this._fajrToken    = await this.homey.flow.createToken('athan_fajr',    { type: 'string',  title: 'Fajr Time' });
@@ -28,8 +26,7 @@ class AthanTimesApp extends Homey.App {
     this._maghribToken = await this.homey.flow.createToken('athan_maghrib', { type: 'string',  title: 'Maghrib Time' });
     this._ishaToken    = await this.homey.flow.createToken('athan_isha',    { type: 'string',  title: 'Isha Time' });
     this._suhoorToken  = await this.homey.flow.createToken('athan_suhoor',  { type: 'string',  title: 'Suhoor Time' });
-    this._isRamadanToken = await this.homey.flow.createToken('athan_is_ramadan', { type: 'boolean', title: 'Is Ramadan' });
-    this._isEidToken     = await this.homey.flow.createToken('athan_is_eid',     { type: 'boolean', title: 'Is Eid' });
+    this._isRamadanToken = await this.homey.flow.createToken('month_is_ramadan', { type: 'boolean', title: 'Is Ramadan' });
 
     await this.updateSchedule();
     
@@ -74,18 +71,10 @@ class AthanTimesApp extends Homey.App {
       const hijriMonth = json.data.date.hijri.month.number;
       const hijriDay = parseInt(json.data.date.hijri.day, 10);
       this.isRamadan = (hijriMonth === 9);
-      this.isEid = (hijriMonth === 10 && hijriDay === 1);
-      
-      let suhoorDisplay = "Not Ramadan";
-      this.suhoorTime = null; 
-
-      if (this.isRamadan) {
-        const offsetSetting = this.homey.settings.get('suhoor_offset') || "60";
-        const offset = parseInt(offsetSetting, 10);
-        const cleanFajr = this.currentTimings.Fajr.substring(0, 5);
-        this.suhoorTime = this.calculateOffset(cleanFajr, offset);
-        suhoorDisplay = this.suhoorTime;
-      }
+      const offsetSetting = this.homey.settings.get('suhoor_offset') || "60";
+      const offset = parseInt(offsetSetting, 10);
+      const cleanFajr = this.currentTimings.Fajr.substring(0, 5);
+      this.suhoorTime = this.calculateOffset(cleanFajr, offset);
       
       const displayData = {
         Fajr: this.currentTimings.Fajr.substring(0, 5),
@@ -93,8 +82,7 @@ class AthanTimesApp extends Homey.App {
         Asr: this.currentTimings.Asr.substring(0, 5),
         Maghrib: this.currentTimings.Maghrib.substring(0, 5),
         Isha: this.currentTimings.Isha.substring(0, 5),
-        Suhoor: suhoorDisplay,
-        Eid: this.isEid ? "Yes (Today!)" : "No"
+        Suhoor: this.suhoorTime,
       };
       
       this.homey.settings.set('calculated_times', displayData);
@@ -109,12 +97,6 @@ class AthanTimesApp extends Homey.App {
       await this._ishaToken.setValue(displayData.Isha);
       await this._suhoorToken.setValue(displayData.Suhoor);
       await this._isRamadanToken.setValue(this.isRamadan);
-      await this._isEidToken.setValue(this.isEid);
-
-      // Push to virtual device(s)
-      for (const device of this._scheduleDevices) {
-        device.updateSchedule(this.currentTimings, this.suhoorTime, this.isRamadan).catch(err => this.error('Device update error:', err));
-      }
 
     } catch (err) {
       this.error('Sync Error:', err);
@@ -142,20 +124,6 @@ class AthanTimesApp extends Homey.App {
     const newM = totalMins % 60;
     
     return `${String(newH).padStart(2, '0')}:${String(newM).padStart(2, '0')}`;
-  }
-
-  registerScheduleDevice(device) {
-    if (!this._scheduleDevices.includes(device)) {
-      this._scheduleDevices.push(device);
-      // Push current data immediately on register
-      if (this.currentTimings) {
-        device.updateSchedule(this.currentTimings, this.suhoorTime, this.isRamadan).catch(err => this.error('Device init update error:', err));
-      }
-    }
-  }
-
-  unregisterScheduleDevice(device) {
-    this._scheduleDevices = this._scheduleDevices.filter(d => d !== device);
   }
 
   checkTimings() {
@@ -198,15 +166,9 @@ class AthanTimesApp extends Homey.App {
       }
     });
 
-    if (this.isRamadan && this.suhoorTime === cur) {
+    if (this.suhoorTime === cur) {
       this.log(`Triggering Suhoor Alarm at ${cur}`);
       this.suhoorTrigger.trigger().catch(err => this.error('Suhoor Trigger Error:', err));
-      triggeredSomething = true;
-    }
-
-    if (this.isEid && this.currentTimings.Fajr.substring(0, 5) === cur) {
-      this.log(`Triggering Eid Alarm at ${cur}`);
-      this.eidTrigger.trigger().catch(err => this.error('Eid Trigger Error:', err));
       triggeredSomething = true;
     }
 
