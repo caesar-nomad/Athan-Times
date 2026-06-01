@@ -134,8 +134,8 @@
       {
         "id": "suhoor_alarm",
         "title": {
-          "en": "Suhoor time begins",
-          "ar": "حان وقت السحور"
+          "en": "Suhoor Alarm (Ramadan Only)",
+          "ar": "تنبيه السحور (رمضان فقط)"
         }
       }
     ]
