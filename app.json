@@ -134,10 +134,38 @@
       {
         "id": "suhoor_alarm",
         "title": {
-          "en": "Suhoor Alarm (Ramadan Only)",
-          "ar": "تنبيه السحور (رمضان فقط)"
+          "en": "Suhoor time begins",
+          "ar": "حان وقت السحور"
         }
       }
     ]
+  },
+  "capabilities": {
+    "is_ramadan": {
+      "type": "boolean",
+      "title": {
+        "en": "Ramadan",
+        "ar": "رمضان"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor"
+    },
+    "prayer_time": {
+      "type": "number",
+      "title": {
+        "en": "Prayer Time",
+        "ar": "وقت الصلاة"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "units": {
+        "en": "min"
+      },
+      "min": 0,
+      "max": 1439,
+      "decimals": 0
+    }
   }
 }

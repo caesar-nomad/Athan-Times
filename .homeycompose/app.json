@@ -9,7 +9,7 @@
     "en": "Never miss a prayer, wherever you are.",
     "ar": "لا تفوت صلاتك"
   },
-  "version": "2.0.0",
+  "version": "2.1.0",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "tags": {
@@ -133,121 +133,10 @@
       {
         "id": "suhoor_alarm",
         "title": {
-          "en": "Suhoor Alarm (Ramadan Only)",
-          "ar": "تنبيه السحور (رمضان فقط)"
+          "en": "Suhoor time begins",
+          "ar": "حان وقت السحور"
         }
       }
     ]
   },
-  "drivers": [
-    {
-      "name": {
-        "en": "Prayer Schedule",
-        "ar": "جدول الصلوات"
-      },
-      "class": "sensor",
-      "capabilities": [
-        "is_ramadan",
-        "prayer_time.suhoor",
-        "prayer_time.fajr",
-        "prayer_time.dhuhr",
-        "prayer_time.asr",
-        "prayer_time.maghrib",
-        "prayer_time.isha"
-      ],
-      "capabilitiesOptions": {
-        "is_ramadan": {
-          "preventInsights": true
-        },
-        "prayer_time.suhoor": {
-          "title": {
-            "en": "Suhoor",
-            "ar": "السحور"
-          },
-          "preventInsights": true
-        },
-        "prayer_time.fajr": {
-          "title": {
-            "en": "Fajr",
-            "ar": "الفجر"
-          },
-          "preventInsights": true
-        },
-        "prayer_time.dhuhr": {
-          "title": {
-            "en": "Dhuhr",
-            "ar": "الظهر"
-          },
-          "preventInsights": true
-        },
-        "prayer_time.asr": {
-          "title": {
-            "en": "Asr",
-            "ar": "العصر"
-          },
-          "preventInsights": true
-        },
-        "prayer_time.maghrib": {
-          "title": {
-            "en": "Maghrib",
-            "ar": "المغرب"
-          },
-          "preventInsights": true
-        },
-        "prayer_time.isha": {
-          "title": {
-            "en": "Isha",
-            "ar": "العشاء"
-          },
-          "preventInsights": true
-        }
-      },
-      "pair": [
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_devices"
-          }
-        },
-        {
-          "id": "add_devices",
-          "template": "add_devices"
-        }
-      ],
-      "images": {
-        "small": "/drivers/prayer_schedule/assets/images/small.png",
-        "large": "/drivers/prayer_schedule/assets/images/large.png"
-      },
-      "id": "prayer_schedule"
-    }
-  ],
-  "capabilities": {
-    "is_ramadan": {
-      "type": "boolean",
-      "title": {
-        "en": "Ramadan",
-        "ar": "رمضان"
-      },
-      "getable": true,
-      "setable": false,
-      "uiComponent": "sensor"
-    },
-    "prayer_time": {
-      "type": "number",
-      "title": {
-        "en": "Prayer Time",
-        "ar": "وقت الصلاة"
-      },
-      "getable": true,
-      "setable": false,
-      "uiComponent": "sensor",
-      "units": {
-        "en": "min"
-      },
-      "min": 0,
-      "max": 1439,
-      "decimals": 0
-    }
-  }
 }
