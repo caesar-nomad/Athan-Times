@@ -40,5 +40,8 @@
   },
   "2.1.0": {
     "en": "Added FlowCard `prayer_started` for type `triggers`"
+  },
+  "2.1.1": {
+    "en": "Bug fixes"
   }
 }
