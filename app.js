@@ -18,6 +18,7 @@ class AthanTimesApp extends Homey.App {
     this.apiTimezone = null;
     this.lastTriggeredMinute = null;
     this.syncRetryCount = 0;
+    this._retryTimeout = null;
 
     // Register global Flow tokens (readable by any app/flow)
     this._fajrToken    = await this.homey.flow.createToken('athan_fajr',    { type: 'string',  title: 'Fajr Time' });
@@ -32,11 +33,12 @@ class AthanTimesApp extends Homey.App {
     
     this.checkInterval = this.homey.setInterval(() => this.checkTimings(), 15000);
 
-    this.homey.settings.on('set', (settingName) => {
-      if (settingName === 'calculated_times') return; 
+    this._onSettingsSet = (settingName) => {
+      if (settingName === 'calculated_times') return;
       this.log(`Setting changed (${settingName}). Recalculating...`);
       this.updateSchedule();
-    });
+    };
+    this.homey.settings.on('set', this._onSettingsSet);
     } catch (err) {
       this.error('App onInit crash:', err);
     }
@@ -45,6 +47,12 @@ class AthanTimesApp extends Homey.App {
   onUninit() {
     if (this.checkInterval) {
       this.homey.clearInterval(this.checkInterval);
+    }
+    if (this._retryTimeout) {
+      this.homey.clearTimeout(this._retryTimeout);
+    }
+    if (this._onSettingsSet) {
+      this.homey.settings.off('set', this._onSettingsSet);
     }
   }
 
@@ -69,7 +77,6 @@ class AthanTimesApp extends Homey.App {
       this.apiTimezone = json.data.meta.timezone; 
       
       const hijriMonth = json.data.date.hijri.month.number;
-      const hijriDay = parseInt(json.data.date.hijri.day, 10);
       this.isRamadan = (hijriMonth === 9);
       const offsetSetting = this.homey.settings.get('suhoor_offset') || "60";
       const offset = parseInt(offsetSetting, 10);
@@ -104,7 +111,10 @@ class AthanTimesApp extends Homey.App {
         this.syncRetryCount++;
         const retryDelay = this.syncRetryCount * 5 * 60 * 1000; // 5, 10, 15, 20, 25 min
         this.log(`Sync failed. Retry ${this.syncRetryCount}/5 in ${this.syncRetryCount * 5} minutes...`);
-        this.homey.setTimeout(() => this.updateSchedule(), retryDelay);
+        this._retryTimeout = this.homey.setTimeout(() => {
+          this._retryTimeout = null;
+          this.updateSchedule();
+        }, retryDelay);
       } else {
         this.error('Sync failed after 5 retries. Will try again at next daily sync.');
         this.syncRetryCount = 0;
