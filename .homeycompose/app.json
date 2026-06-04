@@ -9,7 +9,7 @@
     "en": "Never miss a prayer, wherever you are.",
     "ar": "لا تفوت صلاتك"
   },
-  "version": "2.1.1",
+  "version": "2.1.2",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "tags": {
@@ -72,6 +72,9 @@
     },
     "2.1.0": {
       "en": "Suhoor time is now always shown and triggered regardless of Ramadan — use the 'Is Ramadan' Flow token to act on it conditionally. Removed virtual Prayer Schedule device. Renamed Flow token to month_is_ramadan."
+    },
+    "2.1.2": {
+      "en": "Fixed memory leaks: settings listener and retry timeouts now properly cleaned up on app restart."
     }
   },
   "flow": {
