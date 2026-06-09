@@ -233,15 +233,15 @@
                 "label": {
                   "en": "Fajr",
                   "nl": "Fajr",
-                  "de": "Fadschr",
+                  "de": "Fajr",
                   "fr": "Fajr",
                   "it": "Fajr",
                   "sv": "Fajr",
                   "no": "Fajr",
-                  "es": "Fayr",
+                  "es": "Fajr",
                   "da": "Fajr",
                   "ru": "Фаджр",
-                  "pl": "Fadżr",
+                  "pl": "Fajr",
                   "ko": "파즈르",
                   "ar": "الفجر"
                 }
@@ -259,7 +259,7 @@
                   "es": "Dhuhr",
                   "da": "Dhuhr",
                   "ru": "Зухр",
-                  "pl": "Zuhr",
+                  "pl": "Dhuhr",
                   "ko": "주흐르",
                   "ar": "الظهر"
                 }
@@ -292,7 +292,7 @@
                   "it": "Maghrib",
                   "sv": "Maghrib",
                   "no": "Maghrib",
-                  "es": "Magrib",
+                  "es": "Maghrib",
                   "da": "Maghrib",
                   "ru": "Магриб",
                   "pl": "Maghrib",
@@ -305,7 +305,7 @@
                 "label": {
                   "en": "Isha",
                   "nl": "Isha",
-                  "de": "Ischa",
+                  "de": "Isha",
                   "fr": "Isha",
                   "it": "Isha",
                   "sv": "Isha",
@@ -313,7 +313,7 @@
                   "es": "Isha",
                   "da": "Isha",
                   "ru": "Иша",
-                  "pl": "Isza",
+                  "pl": "Isha",
                   "ko": "이샤",
                   "ar": "العشاء"
                 }

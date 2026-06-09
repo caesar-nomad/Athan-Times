@@ -38,9 +38,9 @@
         {
           "id": "Fajr",
           "label": {
-            "en": "Fajr", "nl": "Fajr", "de": "Fadschr", "fr": "Fajr", "it": "Fajr",
-            "sv": "Fajr", "no": "Fajr", "es": "Fayr", "da": "Fajr", "ru": "Фаджр",
-            "pl": "Fadżr", "ko": "파즈르", "ar": "الفجر"
+            "en": "Fajr", "nl": "Fajr", "de": "Fajr", "fr": "Fajr", "it": "Fajr",
+            "sv": "Fajr", "no": "Fajr", "es": "Fajr", "da": "Fajr", "ru": "Фаджр",
+            "pl": "Fajr", "ko": "파즈르", "ar": "الفجر"
           }
         },
         {
@@ -48,7 +48,7 @@
           "label": {
             "en": "Dhuhr", "nl": "Dhuhr", "de": "Dhuhr", "fr": "Dhuhr", "it": "Dhuhr",
             "sv": "Dhuhr", "no": "Dhuhr", "es": "Dhuhr", "da": "Dhuhr", "ru": "Зухр",
-            "pl": "Zuhr", "ko": "주흐르", "ar": "الظهر"
+            "pl": "Dhuhr", "ko": "주흐르", "ar": "الظهر"
           }
         },
         {
@@ -63,16 +63,16 @@
           "id": "Maghrib",
           "label": {
             "en": "Maghrib", "nl": "Maghrib", "de": "Maghrib", "fr": "Maghrib", "it": "Maghrib",
-            "sv": "Maghrib", "no": "Maghrib", "es": "Magrib", "da": "Maghrib", "ru": "Магриб",
+            "sv": "Maghrib", "no": "Maghrib", "es": "Maghrib", "da": "Maghrib", "ru": "Магриб",
             "pl": "Maghrib", "ko": "마그립", "ar": "المغرب"
           }
         },
         {
           "id": "Isha",
           "label": {
-            "en": "Isha", "nl": "Isha", "de": "Ischa", "fr": "Isha", "it": "Isha",
+            "en": "Isha", "nl": "Isha", "de": "Isha", "fr": "Isha", "it": "Isha",
             "sv": "Isha", "no": "Isha", "es": "Isha", "da": "Isha", "ru": "Иша",
-            "pl": "Isza", "ko": "이샤", "ar": "العشاء"
+            "pl": "Isha", "ko": "이샤", "ar": "العشاء"
           }
         }
       ]
