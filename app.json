@@ -8,9 +8,20 @@
   },
   "description": {
     "en": "Never miss a prayer, wherever you are.",
+    "nl": "Mis nooit meer een gebed, waar je ook bent.",
+    "de": "Verpasse nie wieder ein Gebet, egal wo du bist.",
+    "fr": "Ne manquez jamais une prière, où que vous soyez.",
+    "it": "Non perdere mai una preghiera, ovunque tu sia.",
+    "sv": "Missa aldrig en bön, var du än är.",
+    "no": "Gå aldri glipp av en bønn, uansett hvor du er.",
+    "es": "No te pierdas nunca una oración, estés donde estés.",
+    "da": "Gå aldrig glip af en bøn, uanset hvor du er.",
+    "ru": "Никогда не пропускайте молитву, где бы вы ни были.",
+    "pl": "Nigdy nie przegap modlitwy, gdziekolwiek jesteś.",
+    "ko": "어디에 있든 예배 시간을 놓치지 마세요.",
     "ar": "لا تفوت صلاتك"
   },
-  "version": "2.1.1",
+  "version": "2.2.0",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "tags": {
@@ -18,7 +29,104 @@
       "islam",
       "prayer",
       "ramadan",
-      "athan"
+      "athan",
+      "adhan",
+      "prayer times"
+    ],
+    "nl": [
+      "islam",
+      "gebed",
+      "ramadan",
+      "athan",
+      "adhan",
+      "gebedstijden"
+    ],
+    "de": [
+      "islam",
+      "gebet",
+      "ramadan",
+      "athan",
+      "adhan",
+      "gebetszeiten"
+    ],
+    "fr": [
+      "islam",
+      "prière",
+      "ramadan",
+      "athan",
+      "adhan",
+      "horaires de prière"
+    ],
+    "it": [
+      "islam",
+      "preghiera",
+      "ramadan",
+      "athan",
+      "adhan",
+      "orari di preghiera"
+    ],
+    "sv": [
+      "islam",
+      "bön",
+      "ramadan",
+      "athan",
+      "adhan",
+      "bönetider"
+    ],
+    "no": [
+      "islam",
+      "bønn",
+      "ramadan",
+      "athan",
+      "adhan",
+      "bønnetider"
+    ],
+    "es": [
+      "islam",
+      "oración",
+      "ramadán",
+      "athan",
+      "adhan",
+      "horario de oración"
+    ],
+    "da": [
+      "islam",
+      "bøn",
+      "ramadan",
+      "athan",
+      "adhan",
+      "bønnetider"
+    ],
+    "ru": [
+      "ислам",
+      "молитва",
+      "рамадан",
+      "азан",
+      "намаз",
+      "время молитвы"
+    ],
+    "pl": [
+      "islam",
+      "modlitwa",
+      "ramadan",
+      "azan",
+      "athan",
+      "czas modlitwy"
+    ],
+    "ko": [
+      "이슬람",
+      "예배",
+      "라마단",
+      "아잔",
+      "기도",
+      "예배 시간"
+    ],
+    "ar": [
+      "إسلام",
+      "صلاة",
+      "رمضان",
+      "أذان",
+      "مواقيت الصلاة"
     ]
   },
   "brandColor": "#064e3b",
@@ -73,6 +181,12 @@
     },
     "2.1.0": {
       "en": "Suhoor time is now always shown and triggered regardless of Ramadan — use the 'Is Ramadan' Flow token to act on it conditionally. Removed virtual Prayer Schedule device. Renamed Flow token to month_is_ramadan."
+    },
+    "2.1.2": {
+      "en": "Fixed memory leaks: settings listener and retry timeouts now properly cleaned up on app restart."
+    },
+    "2.2.0": {
+      "en": "Added translations for Dutch, German, French, Italian, Swedish, Norwegian, Spanish, Danish, Russian, Polish and Korean — covering the app description, Flow cards and prayer names."
     }
   },
   "flow": {
@@ -81,10 +195,32 @@
         "id": "prayer_started",
         "title": {
           "en": "A prayer starts",
+          "nl": "Een gebed begint",
+          "de": "Ein Gebet beginnt",
+          "fr": "Une prière commence",
+          "it": "Inizia una preghiera",
+          "sv": "En bön börjar",
+          "no": "En bønn begynner",
+          "es": "Comienza una oración",
+          "da": "En bøn begynder",
+          "ru": "Начинается молитва",
+          "pl": "Rozpoczyna się modlitwa",
+          "ko": "예배가 시작됨",
           "ar": "حان وقت الصلاة"
         },
         "titleFormatted": {
           "en": "Prayer starts: [[prayer]]",
+          "nl": "Gebed begint: [[prayer]]",
+          "de": "Gebet beginnt: [[prayer]]",
+          "fr": "La prière commence : [[prayer]]",
+          "it": "Inizia la preghiera: [[prayer]]",
+          "sv": "Bönen börjar: [[prayer]]",
+          "no": "Bønnen begynner: [[prayer]]",
+          "es": "Comienza la oración: [[prayer]]",
+          "da": "Bønnen begynder: [[prayer]]",
+          "ru": "Начинается молитва: [[prayer]]",
+          "pl": "Modlitwa się rozpoczyna: [[prayer]]",
+          "ko": "예배 시작: [[prayer]]",
           "ar": "حان وقت: [[prayer]]"
         },
         "args": [
@@ -96,6 +232,17 @@
                 "id": "Fajr",
                 "label": {
                   "en": "Fajr",
+                  "nl": "Fajr",
+                  "de": "Fadschr",
+                  "fr": "Fajr",
+                  "it": "Fajr",
+                  "sv": "Fajr",
+                  "no": "Fajr",
+                  "es": "Fayr",
+                  "da": "Fajr",
+                  "ru": "Фаджр",
+                  "pl": "Fadżr",
+                  "ko": "파즈르",
                   "ar": "الفجر"
                 }
               },
@@ -103,6 +250,17 @@
                 "id": "Dhuhr",
                 "label": {
                   "en": "Dhuhr",
+                  "nl": "Dhuhr",
+                  "de": "Dhuhr",
+                  "fr": "Dhuhr",
+                  "it": "Dhuhr",
+                  "sv": "Dhuhr",
+                  "no": "Dhuhr",
+                  "es": "Dhuhr",
+                  "da": "Dhuhr",
+                  "ru": "Зухр",
+                  "pl": "Zuhr",
+                  "ko": "주흐르",
                   "ar": "الظهر"
                 }
               },
@@ -110,6 +268,17 @@
                 "id": "Asr",
                 "label": {
                   "en": "Asr",
+                  "nl": "Asr",
+                  "de": "Asr",
+                  "fr": "Asr",
+                  "it": "Asr",
+                  "sv": "Asr",
+                  "no": "Asr",
+                  "es": "Asr",
+                  "da": "Asr",
+                  "ru": "Аср",
+                  "pl": "Asr",
+                  "ko": "아스르",
                   "ar": "العصر"
                 }
               },
@@ -117,6 +286,17 @@
                 "id": "Maghrib",
                 "label": {
                   "en": "Maghrib",
+                  "nl": "Maghrib",
+                  "de": "Maghrib",
+                  "fr": "Maghrib",
+                  "it": "Maghrib",
+                  "sv": "Maghrib",
+                  "no": "Maghrib",
+                  "es": "Magrib",
+                  "da": "Maghrib",
+                  "ru": "Магриб",
+                  "pl": "Maghrib",
+                  "ko": "마그립",
                   "ar": "المغرب"
                 }
               },
@@ -124,6 +304,17 @@
                 "id": "Isha",
                 "label": {
                   "en": "Isha",
+                  "nl": "Isha",
+                  "de": "Ischa",
+                  "fr": "Isha",
+                  "it": "Isha",
+                  "sv": "Isha",
+                  "no": "Isha",
+                  "es": "Isha",
+                  "da": "Isha",
+                  "ru": "Иша",
+                  "pl": "Isza",
+                  "ko": "이샤",
                   "ar": "العشاء"
                 }
               }
@@ -135,6 +326,17 @@
         "id": "suhoor_alarm",
         "title": {
           "en": "Suhoor time begins",
+          "nl": "Suhoor-tijd begint",
+          "de": "Suhoor-Zeit beginnt",
+          "fr": "L'heure du Suhoor commence",
+          "it": "Inizia l'orario del Suhoor",
+          "sv": "Suhoor-tiden börjar",
+          "no": "Suhoor-tiden begynner",
+          "es": "Comienza la hora del Suhoor",
+          "da": "Suhoor-tiden begynder",
+          "ru": "Наступает время сухура",
+          "pl": "Rozpoczyna się czas suhur",
+          "ko": "수후르 시간이 시작됨",
           "ar": "حان وقت السحور"
         }
       }

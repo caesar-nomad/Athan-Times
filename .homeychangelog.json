@@ -43,5 +43,8 @@
   },
   "2.1.1": {
     "en": "Bug fixes"
+  },
+  "2.1.2": {
+    "en": "Fixed memory leaks: settings listener and retry timeouts now properly cleaned up on app restart."
   }
 }

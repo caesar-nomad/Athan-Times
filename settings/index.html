@@ -56,7 +56,7 @@
             Homey.get('calculated_times', function(err, data) {
                 if (data) {
                     let html = '';
-                    const order = ['Suhoor', 'Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Eid'];
+                    const order = ['Suhoor', 'Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
                     order.forEach(key => {
                         html += `<div class="time-row"><span class="time-label">${key}</span><span class="time-value">${data[key]}</span></div>`;
                     });

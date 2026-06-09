@@ -7,9 +7,20 @@
   },
   "description": {
     "en": "Never miss a prayer, wherever you are.",
+    "nl": "Mis nooit meer een gebed, waar je ook bent.",
+    "de": "Verpasse nie wieder ein Gebet, egal wo du bist.",
+    "fr": "Ne manquez jamais une prière, où que vous soyez.",
+    "it": "Non perdere mai una preghiera, ovunque tu sia.",
+    "sv": "Missa aldrig en bön, var du än är.",
+    "no": "Gå aldri glipp av en bønn, uansett hvor du er.",
+    "es": "No te pierdas nunca una oración, estés donde estés.",
+    "da": "Gå aldrig glip af en bøn, uanset hvor du er.",
+    "ru": "Никогда не пропускайте молитву, где бы вы ни были.",
+    "pl": "Nigdy nie przegap modlitwy, gdziekolwiek jesteś.",
+    "ko": "어디에 있든 예배 시간을 놓치지 마세요.",
     "ar": "لا تفوت صلاتك"
   },
-  "version": "2.1.2",
+  "version": "2.2.0",
   "compatibility": ">=5.0.0",
   "category": "tools",
   "tags": {
@@ -17,7 +28,104 @@
       "islam",
       "prayer",
       "ramadan",
-      "athan"
+      "athan",
+      "adhan",
+      "prayer times"
+    ],
+    "nl": [
+      "islam",
+      "gebed",
+      "ramadan",
+      "athan",
+      "adhan",
+      "gebedstijden"
+    ],
+    "de": [
+      "islam",
+      "gebet",
+      "ramadan",
+      "athan",
+      "adhan",
+      "gebetszeiten"
+    ],
+    "fr": [
+      "islam",
+      "prière",
+      "ramadan",
+      "athan",
+      "adhan",
+      "horaires de prière"
+    ],
+    "it": [
+      "islam",
+      "preghiera",
+      "ramadan",
+      "athan",
+      "adhan",
+      "orari di preghiera"
+    ],
+    "sv": [
+      "islam",
+      "bön",
+      "ramadan",
+      "athan",
+      "adhan",
+      "bönetider"
+    ],
+    "no": [
+      "islam",
+      "bønn",
+      "ramadan",
+      "athan",
+      "adhan",
+      "bønnetider"
+    ],
+    "es": [
+      "islam",
+      "oración",
+      "ramadán",
+      "athan",
+      "adhan",
+      "horario de oración"
+    ],
+    "da": [
+      "islam",
+      "bøn",
+      "ramadan",
+      "athan",
+      "adhan",
+      "bønnetider"
+    ],
+    "ru": [
+      "ислам",
+      "молитва",
+      "рамадан",
+      "азан",
+      "намаз",
+      "время молитвы"
+    ],
+    "pl": [
+      "islam",
+      "modlitwa",
+      "ramadan",
+      "azan",
+      "athan",
+      "czas modlitwy"
+    ],
+    "ko": [
+      "이슬람",
+      "예배",
+      "라마단",
+      "아잔",
+      "기도",
+      "예배 시간"
+    ],
+    "ar": [
+      "إسلام",
+      "صلاة",
+      "رمضان",
+      "أذان",
+      "مواقيت الصلاة"
     ]
   },
   "brandColor": "#064e3b",
@@ -75,71 +183,9 @@
     },
     "2.1.2": {
       "en": "Fixed memory leaks: settings listener and retry timeouts now properly cleaned up on app restart."
+    },
+    "2.2.0": {
+      "en": "Added translations for Dutch, German, French, Italian, Swedish, Norwegian, Spanish, Danish, Russian, Polish and Korean — covering the app description, Flow cards and prayer names."
     }
-  },
-  "flow": {
-    "triggers": [
-      {
-        "id": "prayer_started",
-        "title": {
-          "en": "A prayer starts",
-          "ar": "حان وقت الصلاة"
-        },
-        "titleFormatted": {
-          "en": "Prayer starts: [[prayer]]",
-          "ar": "حان وقت: [[prayer]]"
-        },
-        "args": [
-          {
-            "name": "prayer",
-            "type": "dropdown",
-            "values": [
-              {
-                "id": "Fajr",
-                "label": {
-                  "en": "Fajr",
-                  "ar": "الفجر"
-                }
-              },
-              {
-                "id": "Dhuhr",
-                "label": {
-                  "en": "Dhuhr",
-                  "ar": "الظهر"
-                }
-              },
-              {
-                "id": "Asr",
-                "label": {
-                  "en": "Asr",
-                  "ar": "العصر"
-                }
-              },
-              {
-                "id": "Maghrib",
-                "label": {
-                  "en": "Maghrib",
-                  "ar": "المغرب"
-                }
-              },
-              {
-                "id": "Isha",
-                "label": {
-                  "en": "Isha",
-                  "ar": "العشاء"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "suhoor_alarm",
-        "title": {
-          "en": "Suhoor time begins",
-          "ar": "حان وقت السحور"
-        }
-      }
-    ]
   }
 }

@@ -2,10 +2,32 @@
   "id": "prayer_started",
   "title": {
     "en": "A prayer starts",
+    "nl": "Een gebed begint",
+    "de": "Ein Gebet beginnt",
+    "fr": "Une prière commence",
+    "it": "Inizia una preghiera",
+    "sv": "En bön börjar",
+    "no": "En bønn begynner",
+    "es": "Comienza una oración",
+    "da": "En bøn begynder",
+    "ru": "Начинается молитва",
+    "pl": "Rozpoczyna się modlitwa",
+    "ko": "예배가 시작됨",
     "ar": "حان وقت الصلاة"
   },
   "titleFormatted": {
     "en": "Prayer starts: [[prayer]]",
+    "nl": "Gebed begint: [[prayer]]",
+    "de": "Gebet beginnt: [[prayer]]",
+    "fr": "La prière commence : [[prayer]]",
+    "it": "Inizia la preghiera: [[prayer]]",
+    "sv": "Bönen börjar: [[prayer]]",
+    "no": "Bønnen begynner: [[prayer]]",
+    "es": "Comienza la oración: [[prayer]]",
+    "da": "Bønnen begynder: [[prayer]]",
+    "ru": "Начинается молитва: [[prayer]]",
+    "pl": "Modlitwa się rozpoczyna: [[prayer]]",
+    "ko": "예배 시작: [[prayer]]",
     "ar": "حان وقت: [[prayer]]"
   },
   "args": [
@@ -13,11 +35,46 @@
       "name": "prayer",
       "type": "dropdown",
       "values": [
-        { "id": "Fajr",    "label": { "en": "Fajr",    "ar": "الفجر"  } },
-        { "id": "Dhuhr",   "label": { "en": "Dhuhr",   "ar": "الظهر"  } },
-        { "id": "Asr",     "label": { "en": "Asr",     "ar": "العصر"  } },
-        { "id": "Maghrib", "label": { "en": "Maghrib", "ar": "المغرب" } },
-        { "id": "Isha",    "label": { "en": "Isha",    "ar": "العشاء" } }
+        {
+          "id": "Fajr",
+          "label": {
+            "en": "Fajr", "nl": "Fajr", "de": "Fadschr", "fr": "Fajr", "it": "Fajr",
+            "sv": "Fajr", "no": "Fajr", "es": "Fayr", "da": "Fajr", "ru": "Фаджр",
+            "pl": "Fadżr", "ko": "파즈르", "ar": "الفجر"
+          }
+        },
+        {
+          "id": "Dhuhr",
+          "label": {
+            "en": "Dhuhr", "nl": "Dhuhr", "de": "Dhuhr", "fr": "Dhuhr", "it": "Dhuhr",
+            "sv": "Dhuhr", "no": "Dhuhr", "es": "Dhuhr", "da": "Dhuhr", "ru": "Зухр",
+            "pl": "Zuhr", "ko": "주흐르", "ar": "الظهر"
+          }
+        },
+        {
+          "id": "Asr",
+          "label": {
+            "en": "Asr", "nl": "Asr", "de": "Asr", "fr": "Asr", "it": "Asr",
+            "sv": "Asr", "no": "Asr", "es": "Asr", "da": "Asr", "ru": "Аср",
+            "pl": "Asr", "ko": "아스르", "ar": "العصر"
+          }
+        },
+        {
+          "id": "Maghrib",
+          "label": {
+            "en": "Maghrib", "nl": "Maghrib", "de": "Maghrib", "fr": "Maghrib", "it": "Maghrib",
+            "sv": "Maghrib", "no": "Maghrib", "es": "Magrib", "da": "Maghrib", "ru": "Магриб",
+            "pl": "Maghrib", "ko": "마그립", "ar": "المغرب"
+          }
+        },
+        {
+          "id": "Isha",
+          "label": {
+            "en": "Isha", "nl": "Isha", "de": "Ischa", "fr": "Isha", "it": "Isha",
+            "sv": "Isha", "no": "Isha", "es": "Isha", "da": "Isha", "ru": "Иша",
+            "pl": "Isza", "ko": "이샤", "ar": "العشاء"
+          }
+        }
       ]
     }
   ]

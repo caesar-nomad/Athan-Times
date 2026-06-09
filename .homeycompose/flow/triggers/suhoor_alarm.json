@@ -2,6 +2,17 @@
   "id": "suhoor_alarm",
   "title": {
     "en": "Suhoor time begins",
+    "nl": "Suhoor-tijd begint",
+    "de": "Suhoor-Zeit beginnt",
+    "fr": "L'heure du Suhoor commence",
+    "it": "Inizia l'orario del Suhoor",
+    "sv": "Suhoor-tiden börjar",
+    "no": "Suhoor-tiden begynner",
+    "es": "Comienza la hora del Suhoor",
+    "da": "Suhoor-tiden begynder",
+    "ru": "Наступает время сухура",
+    "pl": "Rozpoczyna się czas suhur",
+    "ko": "수후르 시간이 시작됨",
     "ar": "حان وقت السحور"
   }
 }
