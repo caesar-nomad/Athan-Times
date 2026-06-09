@@ -10,7 +10,7 @@
         button { padding: 14px 20px; background-color: #064e3b; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; margin-top: 10px; }
         button:hover { background-color: #04382a; }
         .description { font-size: 12px; color: #666; margin-top: 4px; }
-        
+
         .dashboard { background-color: #f3f4f6; border-left: 4px solid #064e3b; padding: 16px; border-radius: 6px; margin-bottom: 24px; }
         .dashboard h3 { margin-top: 0; margin-bottom: 12px; font-size: 16px; color: #064e3b; }
         .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 14px; }
@@ -21,63 +21,69 @@
     </style>
 </head>
 <body>
-    <h2>Athan Times Configuration</h2>
-    
+    <h2 data-i18n="settings.title">Athan Times Configuration</h2>
+
     <div class="dashboard">
-        <h3>Today's Schedule</h3>
+        <h3 data-i18n="settings.schedule_heading">Today's Schedule</h3>
         <div id="schedule_display" class="time-grid">
-            <em>Loading timings from Homey...</em>
+            <em data-i18n="settings.loading">Loading timings from Homey...</em>
         </div>
     </div>
-    
+
     <div class="field">
-        <label>Suhoor Alarm Offset</label>
+        <label data-i18n="settings.suhoor_offset_label">Suhoor Alarm Offset</label>
         <input type="number" id="suhoor_offset" value="60" />
-        <div class="description">How many minutes before Fajr should the Suhoor alarm trigger?</div>
-    </div>
-    
-    <div class="field">
-        <label>Hijri Date Adjustment</label>
-        <input type="number" id="hijri_adjustment" value="0" />
-        <div class="description">Use 1 or -1 if your local official moon sighting differs from the standard calculated calendar.</div>
+        <div class="description" data-i18n="settings.suhoor_offset_desc">How many minutes before Fajr should the Suhoor alarm trigger?</div>
     </div>
 
-    <button onclick="saveSettings()">Save & Recalculate</button>
+    <div class="field">
+        <label data-i18n="settings.hijri_label">Hijri Date Adjustment</label>
+        <input type="number" id="hijri_adjustment" value="0" />
+        <div class="description" data-i18n="settings.hijri_desc">Use 1 or -1 if your local official moon sighting differs from the standard calculated calendar.</div>
+    </div>
+
+    <button onclick="saveSettings()" data-i18n="settings.save_button">Save &amp; Recalculate</button>
 
     <script type="text/javascript">
-        function onHomeyReady(Homey) {
+        let Homey;
+
+        function onHomeyReady(_Homey) {
+            Homey = _Homey;
+
             Homey.get('suhoor_offset', function(err, value) {
                 if(value) document.getElementById('suhoor_offset').value = value;
             });
             Homey.get('hijri_adjustment', function(err, value) {
                 if(value) document.getElementById('hijri_adjustment').value = value;
             });
-            
+
             Homey.get('calculated_times', function(err, data) {
+                const display = document.getElementById('schedule_display');
                 if (data) {
                     let html = '';
                     const order = ['Suhoor', 'Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
                     order.forEach(key => {
-                        html += `<div class="time-row"><span class="time-label">${key}</span><span class="time-value">${data[key]}</span></div>`;
+                        const label = Homey.__('settings.prayers.' + key);
+                        html += `<div class="time-row"><span class="time-label">${label}</span><span class="time-value">${data[key]}</span></div>`;
                     });
-                    document.getElementById('schedule_display').innerHTML = html;
-                    document.getElementById('schedule_display').style.display = 'block';
+                    display.innerHTML = html;
+                    display.style.display = 'block';
                 } else {
-                    document.getElementById('schedule_display').innerHTML = "<em>No times available yet. Click Save to pull new data.</em>";
+                    display.innerHTML = '<em>' + Homey.__('settings.no_times') + '</em>';
                 }
             });
-            
+
             Homey.ready();
         }
 
         function saveSettings() {
             var offset = document.getElementById('suhoor_offset').value;
             var adj = document.getElementById('hijri_adjustment').value;
-            
+
             Homey.set('suhoor_offset', offset);
             Homey.set('hijri_adjustment', adj);
-            
-            Homey.alert('Settings Saved! Close and reopen this page in a few seconds to see the updated schedule.', 'info');
+
+            Homey.alert(Homey.__('settings.saved_alert'), 'info');
         }
     </script>
 </body>

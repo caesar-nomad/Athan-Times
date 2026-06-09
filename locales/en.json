@@ -1,0 +1,22 @@
+{
+  "settings": {
+    "title": "Athan Times Configuration",
+    "schedule_heading": "Today's Schedule",
+    "loading": "Loading timings from Homey...",
+    "no_times": "No times available yet. Click Save to pull new data.",
+    "suhoor_offset_label": "Suhoor Alarm Offset",
+    "suhoor_offset_desc": "How many minutes before Fajr should the Suhoor alarm trigger?",
+    "hijri_label": "Hijri Date Adjustment",
+    "hijri_desc": "Use 1 or -1 if your local official moon sighting differs from the standard calculated calendar.",
+    "save_button": "Save & Recalculate",
+    "saved_alert": "Settings Saved! Close and reopen this page in a few seconds to see the updated schedule.",
+    "prayers": {
+      "Suhoor": "Suhoor",
+      "Fajr": "Fajr",
+      "Dhuhr": "Dhuhr",
+      "Asr": "Asr",
+      "Maghrib": "Maghrib",
+      "Isha": "Isha"
+    }
+  }
+}

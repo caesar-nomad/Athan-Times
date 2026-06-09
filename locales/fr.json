@@ -1,0 +1,22 @@
+{
+  "settings": {
+    "title": "Configuration d'Athan Times",
+    "schedule_heading": "Horaires du jour",
+    "loading": "Chargement des horaires depuis Homey...",
+    "no_times": "Aucun horaire disponible pour le moment. Cliquez sur Enregistrer pour récupérer de nouvelles données.",
+    "suhoor_offset_label": "Décalage de l'alarme Suhoor",
+    "suhoor_offset_desc": "Combien de minutes avant le Fajr l'alarme Suhoor doit-elle se déclencher ?",
+    "hijri_label": "Ajustement de la date hégirienne",
+    "hijri_desc": "Utilisez 1 ou -1 si l'observation officielle de la lune dans votre région diffère du calendrier calculé standard.",
+    "save_button": "Enregistrer et recalculer",
+    "saved_alert": "Paramètres enregistrés ! Fermez cette page et rouvrez-la dans quelques secondes pour voir les horaires mis à jour.",
+    "prayers": {
+      "Suhoor": "Suhoor",
+      "Fajr": "Fajr",
+      "Dhuhr": "Dhuhr",
+      "Asr": "Asr",
+      "Maghrib": "Maghrib",
+      "Isha": "Isha"
+    }
+  }
+}

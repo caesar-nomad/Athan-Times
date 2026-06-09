@@ -1,0 +1,22 @@
+{
+  "settings": {
+    "title": "Athan Times 설정",
+    "schedule_heading": "오늘의 일정",
+    "loading": "Homey에서 시간을 불러오는 중...",
+    "no_times": "아직 사용할 수 있는 시간이 없습니다. 저장을 클릭하여 새 데이터를 가져오세요.",
+    "suhoor_offset_label": "수후르 알람 오프셋",
+    "suhoor_offset_desc": "파즈르 몇 분 전에 수후르 알람이 울려야 하나요?",
+    "hijri_label": "히즈리 날짜 조정",
+    "hijri_desc": "지역의 공식 달 관측이 표준 계산 달력과 다를 경우 1 또는 -1을 사용하세요.",
+    "save_button": "저장 후 다시 계산",
+    "saved_alert": "설정이 저장되었습니다! 이 페이지를 닫고 몇 초 후에 다시 열어 업데이트된 일정을 확인하세요.",
+    "prayers": {
+      "Suhoor": "수후르",
+      "Fajr": "파즈르",
+      "Dhuhr": "주흐르",
+      "Asr": "아스르",
+      "Maghrib": "마그립",
+      "Isha": "이샤"
+    }
+  }
+}

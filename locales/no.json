@@ -1,0 +1,22 @@
+{
+  "settings": {
+    "title": "Athan Times-konfigurasjon",
+    "schedule_heading": "Dagens tidsplan",
+    "loading": "Laster tider fra Homey...",
+    "no_times": "Ingen tider tilgjengelig ennå. Klikk på Lagre for å hente nye data.",
+    "suhoor_offset_label": "Forskyvning for Suhoor-alarm",
+    "suhoor_offset_desc": "Hvor mange minutter før Fajr skal Suhoor-alarmen utløses?",
+    "hijri_label": "Justering av hijri-dato",
+    "hijri_desc": "Bruk 1 eller -1 hvis den offisielle måneobservasjonen i din region avviker fra den standard beregnede kalenderen.",
+    "save_button": "Lagre og beregn på nytt",
+    "saved_alert": "Innstillingene er lagret! Lukk denne siden og åpne den igjen om noen sekunder for å se den oppdaterte tidsplanen.",
+    "prayers": {
+      "Suhoor": "Suhoor",
+      "Fajr": "Fajr",
+      "Dhuhr": "Dhuhr",
+      "Asr": "Asr",
+      "Maghrib": "Maghrib",
+      "Isha": "Isha"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "settings": {
+    "title": "Athan Times-configuratie",
+    "schedule_heading": "Schema van vandaag",
+    "loading": "Tijden laden vanaf Homey...",
+    "no_times": "Nog geen tijden beschikbaar. Klik op Opslaan om nieuwe gegevens op te halen.",
+    "suhoor_offset_label": "Suhoor-alarm offset",
+    "suhoor_offset_desc": "Hoeveel minuten vóór Fajr moet het Suhoor-alarm afgaan?",
+    "hijri_label": "Hijri-datumaanpassing",
+    "hijri_desc": "Gebruik 1 of -1 als de officiële maanwaarneming in jouw regio afwijkt van de standaard berekende kalender.",
+    "save_button": "Opslaan en herberekenen",
+    "saved_alert": "Instellingen opgeslagen! Sluit deze pagina en open hem over een paar seconden opnieuw om het bijgewerkte schema te zien.",
+    "prayers": {
+      "Suhoor": "Suhoor",
+      "Fajr": "Fajr",
+      "Dhuhr": "Dhuhr",
+      "Asr": "Asr",
+      "Maghrib": "Maghrib",
+      "Isha": "Isha"
+    }
+  }
+}

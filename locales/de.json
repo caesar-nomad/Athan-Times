@@ -1,0 +1,22 @@
+{
+  "settings": {
+    "title": "Athan Times-Konfiguration",
+    "schedule_heading": "Heutiger Zeitplan",
+    "loading": "Zeiten werden von Homey geladen...",
+    "no_times": "Noch keine Zeiten verfügbar. Klicke auf Speichern, um neue Daten abzurufen.",
+    "suhoor_offset_label": "Suhoor-Alarm-Vorlauf",
+    "suhoor_offset_desc": "Wie viele Minuten vor dem Fajr soll der Suhoor-Alarm ausgelöst werden?",
+    "hijri_label": "Anpassung des Hidschri-Datums",
+    "hijri_desc": "Verwende 1 oder -1, wenn die offizielle Mondsichtung in deiner Region vom standardmäßig berechneten Kalender abweicht.",
+    "save_button": "Speichern und neu berechnen",
+    "saved_alert": "Einstellungen gespeichert! Schließe diese Seite und öffne sie in ein paar Sekunden erneut, um den aktualisierten Zeitplan zu sehen.",
+    "prayers": {
+      "Suhoor": "Suhoor",
+      "Fajr": "Fajr",
+      "Dhuhr": "Dhuhr",
+      "Asr": "Asr",
+      "Maghrib": "Maghrib",
+      "Isha": "Isha"
+    }
+  }
+}
