@@ -129,6 +129,25 @@ class AthanTimesApp extends Homey.App {
     }
   }
 
+  // Calendar date (YYYY-MM-DD) in the given IANA time zone, offset by dayOffset
+  // days. Used for cache freshness so "today/yesterday" track the prayer
+  // location's local day rather than UTC.
+  _localDateStr(timeZone, dayOffset = 0) {
+    const d = new Date(Date.now() + dayOffset * 86400000);
+    try {
+      const parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone,
+        year: 'numeric', month: '2-digit', day: '2-digit',
+      }).formatToParts(d);
+      const y  = parts.find(p => p.type === 'year').value;
+      const mo = parts.find(p => p.type === 'month').value;
+      const da = parts.find(p => p.type === 'day').value;
+      return `${y}-${mo}-${da}`;
+    } catch (e) {
+      return d.toISOString().slice(0, 10);
+    }
+  }
+
   async updateSchedule() {
     // Serialize: a manual save, the daily 02:00 sync and a pending retry can
     // all land at once. Run one at a time; coalesce overlaps into a single re-run.
@@ -161,11 +180,16 @@ class AthanTimesApp extends Homey.App {
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
-      const response = await fetch(url, { signal: controller.signal });
-      clearTimeout(timeoutId);
-
-      if (!response.ok) throw new Error(`API Status: ${response.status}`);
-      const json = await response.json();
+      let json;
+      try {
+        const response = await fetch(url, { signal: controller.signal });
+        if (!response.ok) throw new Error(`API Status: ${response.status}`);
+        json = await response.json();
+      } finally {
+        // Always disarm the abort timer — even if fetch/json throws — so it
+        // can't linger or fire against an already-settled request.
+        clearTimeout(timeoutId);
+      }
 
       this.currentTimings = json.data.timings;
       this.apiTimezone    = json.data.meta.timezone;
@@ -173,8 +197,9 @@ class AthanTimesApp extends Homey.App {
       const hijriMonth = json.data.date.hijri.month.number;
       this.isRamadan = (hijriMonth === 9);
 
-      // Cache raw timings (+ hijri month) for offline fallback
-      const today = new Date().toISOString().slice(0, 10);
+      // Cache raw timings (+ hijri month) for offline fallback. Stamp the date
+      // in the prayer location's local time zone, not UTC.
+      const today = this._localDateStr(this.apiTimezone);
       this.homey.settings.set('_cached_raw_timings', JSON.stringify({
         date: today, timings: this.currentTimings, timezone: this.apiTimezone, hijriMonth,
       }));
@@ -199,8 +224,9 @@ class AthanTimesApp extends Homey.App {
       if (cached) {
         try {
           const { date, timings, timezone, hijriMonth } = JSON.parse(cached);
-          const today     = new Date().toISOString().slice(0, 10);
-          const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+          // Compare against "now" in the same time zone the stamp was written in.
+          const today     = this._localDateStr(timezone);
+          const yesterday = this._localDateStr(timezone, -1);
           if (date === today || date === yesterday) {
             this.currentTimings  = timings;
             this.apiTimezone     = timezone;
