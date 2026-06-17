@@ -34,16 +34,24 @@ class AthanTimesApp extends Homey.App {
       this._nextPrayerToken     = await this.homey.flow.createToken('athan_next_prayer',         { type: 'string', title: 'Next Prayer' });
       this._minutesUntilToken   = await this.homey.flow.createToken('athan_minutes_until_next',  { type: 'number', title: 'Minutes Until Next Prayer' });
 
-      // Insights logs — one entry per prayer per daily sync
+      // Insights logs — one entry per prayer per daily sync.
+      // Reuse the existing log across restarts; createLog throws if it already exists.
       this._insightLogs = {};
       for (const p of ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha', 'Suhoor']) {
+        const logId = `athan_${p.toLowerCase()}`;
         try {
-          this._insightLogs[p] = await this.homey.insights.createLog(
-            `athan_${p.toLowerCase()}`,
-            { title: `${p} (min since midnight)`, type: 'number', units: 'min' }
-          );
+          this._insightLogs[p] = await this.homey.insights.getLog(logId).catch(() => null);
+          if (!this._insightLogs[p]) {
+            this._insightLogs[p] = await this.homey.insights.createLog(logId, {
+              title: `${p} (min since midnight)`,
+              type: 'number',
+              units: 'min',
+              decimals: 0,
+            });
+          }
         } catch (e) {
-          this.error(`Insights createLog failed for ${p}:`, e);
+          this._insightLogs[p] = null;
+          this.error(`Insights log init failed for ${p}:`, e);
         }
       }
 
@@ -54,8 +62,14 @@ class AthanTimesApp extends Homey.App {
       const INTERNAL = new Set(['calculated_times', '_cached_raw_timings']);
       this._onSettingsSet = (settingName) => {
         if (INTERNAL.has(settingName)) return;
-        this.log(`Setting changed (${settingName}). Recalculating...`);
-        this.updateSchedule();
+        // Saving the settings page writes ~10 keys in a burst; debounce so we
+        // recalculate (and hit the API / Insights) only once.
+        this.log(`Setting changed (${settingName}). Scheduling recalculation...`);
+        if (this._settingsDebounce) this.homey.clearTimeout(this._settingsDebounce);
+        this._settingsDebounce = this.homey.setTimeout(() => {
+          this._settingsDebounce = null;
+          this.updateSchedule();
+        }, 1500);
       };
       this.homey.settings.on('set', this._onSettingsSet);
     } catch (err) {
@@ -64,9 +78,10 @@ class AthanTimesApp extends Homey.App {
   }
 
   onUninit() {
-    if (this.checkInterval)    { this.homey.clearInterval(this.checkInterval); }
-    if (this._retryTimeout)    { this.homey.clearTimeout(this._retryTimeout); }
-    if (this._onSettingsSet)   { this.homey.settings.off('set', this._onSettingsSet); }
+    if (this.checkInterval)     { this.homey.clearInterval(this.checkInterval); }
+    if (this._retryTimeout)     { this.homey.clearTimeout(this._retryTimeout); }
+    if (this._settingsDebounce) { this.homey.clearTimeout(this._settingsDebounce); }
+    if (this._onSettingsSet)    { this.homey.settings.off('set', this._onSettingsSet); }
   }
 
   // Apply per-prayer minute offsets to raw API timings.
@@ -115,6 +130,22 @@ class AthanTimesApp extends Homey.App {
   }
 
   async updateSchedule() {
+    // Serialize: a manual save, the daily 02:00 sync and a pending retry can
+    // all land at once. Run one at a time; coalesce overlaps into a single re-run.
+    if (this._syncing) { this._syncPending = true; return; }
+    this._syncing = true;
+    try {
+      await this._doUpdateSchedule();
+    } finally {
+      this._syncing = false;
+      if (this._syncPending) {
+        this._syncPending = false;
+        this.updateSchedule();
+      }
+    }
+  }
+
+  async _doUpdateSchedule() {
     this.syncRetryCount = (this.syncRetryCount || 0);
     try {
       const lat    = this.homey.geolocation.getLatitude();
@@ -139,14 +170,14 @@ class AthanTimesApp extends Homey.App {
       this.currentTimings = json.data.timings;
       this.apiTimezone    = json.data.meta.timezone;
 
-      // Cache raw timings for offline fallback
-      const today = new Date().toISOString().slice(0, 10);
-      this.homey.settings.set('_cached_raw_timings', JSON.stringify({
-        date: today, timings: this.currentTimings, timezone: this.apiTimezone,
-      }));
-
       const hijriMonth = json.data.date.hijri.month.number;
       this.isRamadan = (hijriMonth === 9);
+
+      // Cache raw timings (+ hijri month) for offline fallback
+      const today = new Date().toISOString().slice(0, 10);
+      this.homey.settings.set('_cached_raw_timings', JSON.stringify({
+        date: today, timings: this.currentTimings, timezone: this.apiTimezone, hijriMonth,
+      }));
 
       const displayData = this._applyOffsets(this.currentTimings);
       this.adjustedTimings = displayData;
@@ -167,12 +198,13 @@ class AthanTimesApp extends Homey.App {
       const cached = this.homey.settings.get('_cached_raw_timings');
       if (cached) {
         try {
-          const { date, timings, timezone } = JSON.parse(cached);
+          const { date, timings, timezone, hijriMonth } = JSON.parse(cached);
           const today     = new Date().toISOString().slice(0, 10);
           const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
           if (date === today || date === yesterday) {
             this.currentTimings  = timings;
             this.apiTimezone     = timezone;
+            if (typeof hijriMonth === 'number') this.isRamadan = (hijriMonth === 9);
             const displayData    = this._applyOffsets(timings);
             this.adjustedTimings = displayData;
             this.suhoorTime      = displayData.Suhoor;
