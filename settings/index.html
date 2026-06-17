@@ -4,9 +4,10 @@
     <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 20px; color: #333; }
-        .field { margin-bottom: 24px; }
+        .field { margin-bottom: 20px; }
         label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
         input { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
+        select { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; background: white; }
         button { padding: 14px 20px; background-color: #064e3b; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; margin-top: 10px; }
         button:hover { background-color: #04382a; }
         .description { font-size: 12px; color: #666; margin-top: 4px; }
@@ -18,6 +19,13 @@
         .time-row:last-child { border-bottom: none; }
         .time-label { font-weight: 600; color: #4b5563; }
         .time-value { font-weight: bold; color: #111827; }
+
+        .section-heading { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #064e3b; margin: 28px 0 14px; border-bottom: 1px solid #d1fae5; padding-bottom: 6px; }
+
+        .offset-grid { display: grid; gap: 6px; margin-top: 10px; }
+        .offset-row { display: flex; align-items: center; gap: 10px; }
+        .offset-label { flex: 1; font-size: 13px; color: #4b5563; }
+        .offset-input { width: 80px; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; text-align: center; box-sizing: border-box; }
     </style>
 </head>
 <body>
@@ -30,12 +38,58 @@
         </div>
     </div>
 
+    <!-- Calculation Settings -->
+    <div class="section-heading" data-i18n="settings.calc_settings_heading">Calculation Settings</div>
+
     <div class="field">
+        <label data-i18n="settings.calc_method_label">Calculation Method</label>
+        <select id="calculation_method">
+            <option value="4">Umm Al-Qura University, Makkah</option>
+            <option value="3">Muslim World League</option>
+            <option value="2">ISNA — Islamic Society of North America</option>
+            <option value="1">University of Islamic Sciences, Karachi</option>
+            <option value="5">Egyptian General Authority of Survey</option>
+            <option value="9">Kuwait</option>
+            <option value="10">Qatar</option>
+            <option value="13">Diyanet İşleri Başkanlığı (Turkey)</option>
+            <option value="14">Spiritual Administration of Muslims of Russia</option>
+        </select>
+        <div class="description" data-i18n="settings.calc_method_desc">The authority or algorithm used to calculate prayer times.</div>
+    </div>
+
+    <div class="field">
+        <label data-i18n="settings.school_label">Asr Calculation (Madhab)</label>
+        <select id="school">
+            <option value="0">Shafi'i / Standard</option>
+            <option value="1">Hanafi</option>
+        </select>
+        <div class="description" data-i18n="settings.school_desc">Hanafi uses a longer shadow ratio, giving a later Asr time.</div>
+    </div>
+
+    <div class="field">
+        <label data-i18n="settings.lat_adj_label">High Latitude Adjustment</label>
+        <select id="lat_adj">
+            <option value="">Automatic (method default)</option>
+            <option value="3">Angle Based</option>
+            <option value="1">Middle of Night</option>
+            <option value="2">One-Seventh of Night</option>
+        </select>
+        <div class="description" data-i18n="settings.lat_adj_desc">Only affects locations where standard times are undefined.</div>
+    </div>
+
+    <!-- Prayer Time Adjustments -->
+    <div class="section-heading" data-i18n="settings.prayer_offsets_heading">Prayer Time Adjustments</div>
+    <div class="description" data-i18n="settings.prayer_offset_desc">Shift each prayer by ±minutes to match your local mosque's announced times.</div>
+    <div class="offset-grid" id="prayer_offset_grid"></div>
+
+    <!-- Suhoor -->
+    <div class="field" style="margin-top: 28px;">
         <label data-i18n="settings.suhoor_offset_label">Suhoor Alarm Offset</label>
         <input type="number" id="suhoor_offset" value="60" />
         <div class="description" data-i18n="settings.suhoor_offset_desc">How many minutes before Fajr should the Suhoor alarm trigger?</div>
     </div>
 
+    <!-- Hijri -->
     <div class="field">
         <label data-i18n="settings.hijri_label">Hijri Date Adjustment</label>
         <input type="number" id="hijri_adjustment" value="0" />
@@ -46,25 +100,56 @@
 
     <script type="text/javascript">
         let Homey;
+        const PRAYERS = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
         function onHomeyReady(_Homey) {
             Homey = _Homey;
 
-            Homey.get('suhoor_offset', function(err, value) {
-                if(value) document.getElementById('suhoor_offset').value = value;
-            });
-            Homey.get('hijri_adjustment', function(err, value) {
-                if(value) document.getElementById('hijri_adjustment').value = value;
+            // Build per-prayer offset grid
+            const grid = document.getElementById('prayer_offset_grid');
+            PRAYERS.forEach(function(p) {
+                const row = document.createElement('div');
+                row.className = 'offset-row';
+                const label = document.createElement('span');
+                label.className = 'offset-label';
+                label.textContent = Homey.__('settings.prayers.' + p) + ' ' + Homey.__('settings.offset_suffix');
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.id = 'offset_' + p.toLowerCase();
+                input.value = '0';
+                input.className = 'offset-input';
+                row.appendChild(label);
+                row.appendChild(input);
+                grid.appendChild(row);
             });
 
+            // Load all settings
+            function loadSetting(key, elementId, defaultVal) {
+                Homey.get(key, function(err, value) {
+                    var el = document.getElementById(elementId);
+                    if (!el) return;
+                    el.value = (value !== null && value !== undefined) ? value : defaultVal;
+                });
+            }
+
+            loadSetting('calculation_method', 'calculation_method', '4');
+            loadSetting('school',             'school',             '0');
+            loadSetting('lat_adj',            'lat_adj',            '');
+            loadSetting('suhoor_offset',      'suhoor_offset',      '60');
+            loadSetting('hijri_adjustment',   'hijri_adjustment',   '0');
+            PRAYERS.forEach(function(p) {
+                loadSetting('offset_' + p.toLowerCase(), 'offset_' + p.toLowerCase(), '0');
+            });
+
+            // Load schedule display
             Homey.get('calculated_times', function(err, data) {
-                const display = document.getElementById('schedule_display');
+                var display = document.getElementById('schedule_display');
                 if (data) {
-                    let html = '';
-                    const order = ['Suhoor', 'Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-                    order.forEach(key => {
-                        const label = Homey.__('settings.prayers.' + key);
-                        html += `<div class="time-row"><span class="time-label">${label}</span><span class="time-value">${data[key]}</span></div>`;
+                    var html = '';
+                    var order = ['Suhoor', 'Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+                    order.forEach(function(key) {
+                        var label = Homey.__('settings.prayers.' + key);
+                        html += '<div class="time-row"><span class="time-label">' + label + '</span><span class="time-value">' + (data[key] || '—') + '</span></div>';
                     });
                     display.innerHTML = html;
                     display.style.display = 'block';
@@ -77,12 +162,14 @@
         }
 
         function saveSettings() {
-            var offset = document.getElementById('suhoor_offset').value;
-            var adj = document.getElementById('hijri_adjustment').value;
-
-            Homey.set('suhoor_offset', offset);
-            Homey.set('hijri_adjustment', adj);
-
+            Homey.set('calculation_method', document.getElementById('calculation_method').value);
+            Homey.set('school',             document.getElementById('school').value);
+            Homey.set('lat_adj',            document.getElementById('lat_adj').value);
+            Homey.set('suhoor_offset',      document.getElementById('suhoor_offset').value);
+            Homey.set('hijri_adjustment',   document.getElementById('hijri_adjustment').value);
+            PRAYERS.forEach(function(p) {
+                Homey.set('offset_' + p.toLowerCase(), document.getElementById('offset_' + p.toLowerCase()).value);
+            });
             Homey.alert(Homey.__('settings.saved_alert'), 'info');
         }
     </script>

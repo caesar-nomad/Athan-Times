@@ -46,5 +46,8 @@
   },
   "2.1.2": {
     "en": "Fixed memory leaks: settings listener and retry timeouts now properly cleaned up on app restart."
+  },
+  "2.2.0": {
+    "en": "Added translations for Dutch, German, French, Italian, Swedish, Norwegian, Spanish, Danish, Russian, Polish and Korean — covering the app description, Flow cards, prayer names and the settings page."
   }
 }
